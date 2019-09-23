@@ -1,0 +1,12 @@
+@import "app/tables/tables.design-system";
+
+$background: #dcdcdc;
+$borderColor: #717171;
+$borderWidth: 1px;
+
+$designForPixel:px;
+
+@include designBasics($designForPixel);
+// @include designBasics($designForRem);
+
+@include dropdown($background, $borderColor, $borderWidth);

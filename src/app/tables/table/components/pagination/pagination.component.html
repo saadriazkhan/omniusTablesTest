@@ -1,0 +1,18 @@
+<div class="is-flex">
+    <div *ngIf="config.pageSizesEnabled">
+        <select 
+            [(ngModel)]="selectedPageSize" 
+            (ngModelChange)="changePageSize()">
+            <option *ngFor="let pageSize of pageSizes">
+                {{pageSize}}
+            </option>
+        </select>
+    </div>
+    <div *ngIf="config.paginationEnabled">
+        <button 
+            *ngFor="let page of givePagesArray(pages); let i = index" 
+            (click)="changePage(i+1)">
+            {{i+1}}
+        </button>
+    </div>
+</div>

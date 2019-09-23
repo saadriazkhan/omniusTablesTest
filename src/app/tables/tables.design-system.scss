@@ -1,0 +1,100 @@
+
+@function sizeValue($key, $value, $sizeUnit) {
+    @return if($key == "0", 0, $value + $sizeUnit);
+}
+
+@mixin designBasics($sizeUnit) {
+    
+    $marginKey: "m";
+    $paddingKey: "p";
+    $separator: "-";
+    $sizes: (
+        "0": 0,
+        "1": 2,
+        "2": 4,
+        "3": 6,
+        "4": 8,
+        "5": 10,
+        "6": 12,
+        "7": 14,
+        "8": 16,
+        "9": 18,
+        "10": 20
+    );
+    $positions: (
+        "t": "top",
+        "r": "right",
+        "b": "bottom",
+        "l": "left"
+    );
+    $superPositions: (
+        "x": "horizontal",
+        "y": "vertical"
+    );
+
+    /* creates different helper class 
+        e.g. mt-1 pt-2 mx-2 px-9 etc 
+    */
+
+    @each $key, $value in $sizes {
+        .#{$marginKey}#{$separator}#{$key} {
+            margin: sizeValue($key, $value, $sizeUnit) !important;
+        }
+        .#{$paddingKey}#{$separator}#{$key} {
+            padding: sizeValue($key, $value, $sizeUnit) !important;
+        }
+
+        @each $positionKey, $positionValue in $positions {
+            .#{$marginKey}#{$positionKey}#{$separator}#{$key} {
+                margin-#{$positionValue}: sizeValue($key, $value, $sizeUnit) !important;
+            }
+            .#{$paddingKey}#{$positionKey}#{$separator}#{$key} {
+                padding-#{$positionValue}: sizeValue($key, $value, $sizeUnit) !important;
+            }
+        }
+        @each $superPositionKey, $superPositionValue in $superPositions {
+            @if ($superPositionKey == "x") {
+                .#{$marginKey}#{$superPositionKey}#{$separator}#{$key} {
+                    margin-left: sizeValue($key, $value, $sizeUnit) !important;
+                    margin-right: sizeValue($key, $value, $sizeUnit) !important;
+                }
+                .#{$paddingKey}#{$superPositionKey}#{$separator}#{$key} {
+                    padding-left: sizeValue($key, $value, $sizeUnit) !important;
+                    padding-right: sizeValue($key, $value, $sizeUnit) !important;
+                }
+            }
+            @if ($superPositionKey == "y") {
+                .#{$marginKey}#{$superPositionKey}#{$separator}#{$key} {
+                    margin-top: sizeValue($key, $value, $sizeUnit) !important;
+                    margin-bottom: sizeValue($key, $value, $sizeUnit) !important;
+                }
+                .#{$paddingKey}#{$superPositionKey}#{$separator}#{$key} {
+                    padding-top: sizeValue($key, $value, $sizeUnit) !important;
+                    padding-bottom: sizeValue($key, $value, $sizeUnit) !important;
+                }
+            }
+        }
+    }
+}
+
+
+@mixin dropdown($background: white, $borderColor: black, $borderWidth: 1px) {
+    .dropdown {
+        z-index: 1;
+        background: $background;
+        border: $borderWidth solid $borderColor;
+
+    }
+}
+
+.is-flex {
+    display: flex;
+}
+
+.d-none {
+    display: none;
+}
+
+.pos-absolute {
+    position: absolute;
+}

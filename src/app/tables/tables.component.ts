@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { TableService } from './service/table.service';
+import { ConfigurationService } from '../configuration/service/configuration.service';
 
 @Component({
-  selector: 'app-tables',
-  templateUrl: './tables.component.html',
-  styleUrls: ['./tables.component.scss']
+    selector: 'app-tables',
+    templateUrl: './tables.component.html',
+    styleUrls: ['./tables.component.scss']
 })
 export class TablesComponent implements OnInit {
 
-  constructor() { }
+    constructor(private tableService: TableService, private configurationService: ConfigurationService) { }
 
-  ngOnInit() {
-  }
+    tableData: {}[] = [];
+    configs: {} = {};
+
+    ngOnInit() {
+        //implement subject here
+        this.tableData = this.tableService.getData();
+        console.log(this.tableData);
+    }
 
 }

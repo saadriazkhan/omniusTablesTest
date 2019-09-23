@@ -1,0 +1,7 @@
+<div *ngIf="searchEnabled">
+    <form (ngSubmit)="onSubmit()">
+        <input type="text" [formControl]="searchValue">
+        <button type="submit">Search</button>
+    </form>
+    <button (click)="clearSearch()">Clear Search</button>
+</div>

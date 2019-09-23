@@ -1,0 +1,14 @@
+<div *ngIf="sortingEnabled">
+    <button (click)="applySorting()">
+        <div *ngIf="selectedSortOrder == 1">
+            <i class="fa fa-arrow-up"></i>
+            <i class="fa fa-arrow-down"></i>
+        </div>
+        <div *ngIf="selectedSortOrder == 2">
+            <i class="fa fa-arrow-up"></i>
+        </div>
+        <div *ngIf="selectedSortOrder == 3">
+            <i class="fa fa-arrow-down"></i>
+        </div>
+    </button>
+</div>

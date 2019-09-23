@@ -1,0 +1,33 @@
+<div (appClickOutside)="showDropdown=false" *ngIf="filterConfig.enabled">
+    <button class="filter-button" (click)="showDropdown=!showDropdown;">
+        <i class=" fa fa-arrow-down"></i>
+    </button>
+    <div class="pos-absolute dropdown" *ngIf="showDropdown">
+        <form (ngSubmit)="onSubmit()">
+            <div *ngIf="filterConfig.filtersEnabled.equals">
+                Equals:
+                <span>
+                    <input type="text" [formControl]="equalValue">
+                </span>
+            </div>
+            <div *ngIf="filterConfig.filtersEnabled.range">
+                <div>
+                    From:
+                    <span>
+                        <input type="number" [formControl]="fromValue">
+                    </span>
+                </div>
+                <div>
+                    To:
+                    <span>
+                        <input type="number" [formControl]="toValue">
+                    </span>
+                </div>
+            </div>
+
+            <button type="submit">Filter</button>
+        </form>
+        <button (click)="clearFilter()">Clear Filter</button>
+    </div>
+
+</div>

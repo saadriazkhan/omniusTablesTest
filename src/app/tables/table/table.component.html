@@ -1,0 +1,50 @@
+<div>
+    <div>
+        <app-search 
+            [placeholder]="'Search anything here'"
+            (searchValueEmitter)="searchInData($event)"
+            (resetSearchEmitter)="resetSearchForData($event)">
+        </app-search>
+    </div>
+       
+    <table>
+        <thead>
+            <tr>
+                <th *ngFor="let head of tableData[0] | tableHeaderItem">
+                    <div>
+                        <span> - </span> <!--  collapse column functionality -->
+                        <span>
+                            {{head}}
+                            <app-sorting [fieldName]="head"></app-sorting>
+                        </span>
+    
+                        <span>
+                            <app-filter 
+                                [fieldName]="head" 
+                                (resetFilterEmitter)="filterData($event)" 
+                                filterSelectedEmitter="resetFilterData($event)">
+                            </app-filter>
+                        </span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData">
+                <!-- <td *ngFor="let list of item | keys">{{item[list]}}</td> -->
+                <td *ngFor="let value of item | tableValueItem">
+                    {{item[value]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <app-pagination 
+        [pages]="5"
+        [pageSizes]="pageSizes"
+        (pageChangeEmitter)="pageChange($event)"
+        (pageSizeChangeEmiiter)="pageSizeChange($event)">
+    </app-pagination>
+
+</div>
+
