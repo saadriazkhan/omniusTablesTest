@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { I18nService } from '../../../../i18n/i18n.service';
 
 @Component({
 	selector: 'app-search',
@@ -24,7 +25,10 @@ export class SearchComponent {
 	searchValue = new FormControl('');
 	searchButtonDisabled: boolean = true;
 
-	constructor() { }
+	languageConfig: any = {};
+	constructor(private languageService: I18nService) {
+		this.languageConfig = this.languageService.getLocaleConfig();
+	}
 
 	onSubmit(): void {
 		(this.searchValue.value.length > 0) ?

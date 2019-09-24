@@ -4,6 +4,7 @@ import { Sort } from './components/models/sort';
 import { Tables, Utility } from './components/models/table.class';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
 	selector: 'app-table',
@@ -22,9 +23,9 @@ export class TableComponent implements Tables {
 		editTableButtonContainerClass: '',
 		hideColumnButtonClass: 'px-1 py-1 has-font-4',
 		showColumnButtonClass: 'px-1 py-1 has-font-4',
-		hideColumnButtonIconClass: 'fa fa-minus',
+		hideColumnButtonIconClass: 'fa fa-remove',
 		showColumnButtonIconClass: 'fa fa-plus',
-		tableContainerClass: 'is-10',
+		tableContainerClass: '',
 		tableHeadContainerClass: 'p-2',
 		tableHeaderTextClass: '',
 		tableHeaderItemClass: 'p-2 text-center has-height-10',
@@ -40,15 +41,19 @@ export class TableComponent implements Tables {
 	hiddenColumnsArray = [];
 
 	utility = new Utility();
-
 	saveTableSubject = new Subject();
 
-	constructor() {
+	languageConfig: any = {};
+	constructor(private languageService: I18nService) {
+		this.languageConfig = this.languageService.getLocaleConfig();
 	}
+
+	objectKeys = [];
 
 	ngOnInit() {
 		this.config = this.tablesConfig['TableConfig']; // over writes the default
 		this.pageSizes = this.config['pageSizes'];
+		this.objectKeys = (this.tableData.length > 0) ? Object.keys(this.tableData[0]) : [];
 
 		this.saveTableSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe(data => {
 			console.log(data);
@@ -90,8 +95,10 @@ export class TableComponent implements Tables {
 	}
 
 	saveTableData($event, rowIndex: number, columnIndex: number): void {
+		const previousValue = this.tableData[rowIndex][this.objectKeys[columnIndex]];
+
 		this.saveTableSubject.next({
-			value: $event.target.textContent,
+			value: (!this.utility.isBoolean(previousValue)) ? $event.target.textContent : $event.target.checked,
 			rowIndex,
 			columnIndex
 		});
@@ -103,7 +110,6 @@ export class TableComponent implements Tables {
 	}
 
 	showColumn(column: string): void {
-		// this.hiddenColumnsArray.find(value => value == column)
 		this.hiddenColumnsArray = this.hiddenColumnsArray.filter(value => {
 			return value != column
 		});

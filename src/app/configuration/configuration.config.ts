@@ -8,23 +8,25 @@ export const config: TablesConfig = {
         editTableButtonContainerClass: '',
         hideColumnButtonClass: 'px-1 py-1 has-font-4 transparent-button',
         showColumnButtonClass: 'px-1 py-1 has-font-4 transparent-button',
-        hideColumnButtonIconClass: 'fa fa-minus',
+        hideColumnButtonIconClass: 'fa fa-remove',
         showColumnButtonIconClass: 'fa fa-plus',
         
-        tableContainerClass: 'is-10 has-font-6',
-        tableHeadContainerClass: 'p-2',
-        tableHeaderTextClass:'',
+        // width of tableHeaderItemClass and tableRowDataClass should be same for alignment
         tableHeaderItemClass: 'p-2 text-center',
+        tableRowDataClass: 'p-2 text-center',
+        
+        tableContainerClass: 'has-font-6',
+        tableHeadContainerClass: 'p-2',
+        tableHeaderTextClass:'text-center',
         tableRowCheckboxClass :'button',
         tableBodyContainerClass: '',
         tableRowClass: 'p-2',
-        tableRowDataClass: 'p-2 text-center',
-        tableRowEditInputClass: 'p-0'
+        tableRowEditInputClass: 'p-0',
     },
     SortingConfig: {
         enabled: true,
-        sortingContainerClass: 'has-width-6',
-        sortingButtonClass: 'px-2 white-button py-1',
+        sortingContainerClass: '',
+        sortingButtonClass: 'px-0 transparent-button py-0 pulled-left',
         sortingUpClass: 'fa fa-caret-up',
         sortingDownClass: 'fa fa-caret-down',
     },
@@ -32,7 +34,7 @@ export const config: TablesConfig = {
         enabled: true,
         rangeEnabled: true,
         equalsEnabled: true,
-        filterButtonClass: 'ml-2 px-2 py-0 white-button has-border-radius-3',
+        filterButtonClass: 'ml-1 px-1 py-0 transparent-button has-border-radius-3 pulled-right',
         dropdownContainerClass: 'p-4 has-border-radius-2',
         formContainerClass: 'p-2',
         formFilterClass: 'is-4',
@@ -44,8 +46,8 @@ export const config: TablesConfig = {
         searchContainerClass: '',
         formContainerClass: '',
         inputClass: '',
-        buttonClass: '',
-        clearButtonClass: ''
+        buttonClass: 'primary-button p-2 mx-4 px-6',
+        clearButtonClass: 'primary-button p-2'
     },
     PaginationConfig: {
         pageSizesEnabled: true,

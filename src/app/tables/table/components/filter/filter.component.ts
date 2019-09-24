@@ -1,6 +1,7 @@
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Filter } from '../models/filter';
+import { I18nService } from '../../../../i18n/i18n.service';
 
 @Component({
 	selector: 'app-filter',
@@ -31,7 +32,10 @@ export class FilterComponent {
 	form;
 	filterButtonDisabled: boolean = true;
 
-	constructor(private formBuilder: FormBuilder) {
+	languageConfig: any = {};
+	constructor(private languageService: I18nService, private formBuilder: FormBuilder) {
+		this.languageConfig = this.languageService.getLocaleConfig();
+
 		this.form = formBuilder.group({
 			equalValue: new FormControl('', Validators.required),
 			fromValue: new FormControl(''),

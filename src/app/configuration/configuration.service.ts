@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { config } from './configuration.config';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ConfigurationService {
 
 	constructor() { }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { I18nService } from '../../../../i18n/i18n.service';
 
 @Component({
 	selector: 'app-pagination',
@@ -24,7 +25,10 @@ export class PaginationComponent implements OnInit {
 	pageSelected: number = 1;
 	selectedPageSize: number = this.pageSizes[0]; // default
 
-	constructor() { }
+	languageConfig: any = {};
+	constructor(private languageService: I18nService) {
+		this.languageConfig = this.languageService.getLocaleConfig();
+	}
 
 	ngOnInit() {
 		this.selectedPageSize = this.pageSizes[0];

@@ -7,6 +7,9 @@
 @function sizeValueHeight($key, $sizeUnit) {
     @return if($key == "0", 0, ($key * 5) + $sizeUnit);
 }
+@function sizeValueWidth($key, $sizeUnit) {
+    @return if($key == "0", 0, ($key * 10) + $sizeUnit);
+}
 
 @mixin fontAndBorderSizes($sizeUnit) {
     $fontKey: "has-font-";
@@ -15,10 +18,8 @@
     $borderRadiusKey: "has-border-radius-";
     $borderKey: "has-border-";
     $opacityKey: "has-opacity-";
-    $borderSizes: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    $sizes: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    
-    @each $key in $borderSizes {
+
+    @for $key from 0 through 10 {
         .#{$borderRadiusKey}#{$key} {
             border-radius: sizeValue($key, $sizeUnit) !important;
         }
@@ -30,12 +31,12 @@
         }
     }
 
-    @each $key in $sizes {
+    @for $key from 1 through 30 {
         .#{$heightKey}#{$key} {
             height: sizeValueHeight($key, $sizeUnit) !important;
         }
         .#{$widthKey}#{$key} {
-            width: sizeValueHeight($key, $sizeUnit) !important;
+            width: sizeValueWidth($key, $sizeUnit) !important;
         }
         .#{$fontKey}#{$key} {
             font-size: sizeValue($key, $sizeUnit) !important;
@@ -47,7 +48,6 @@
     $marginKey: "m";
     $paddingKey: "p";
     $separator: "-";
-    $sizes: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     $positions: (
         "t": "top",
         "r": "right",
@@ -63,7 +63,7 @@
         e.g. mt-1 pt-2 mx-2 px-9 etc 
     */
 
-    @each $key in $sizes {
+    @for $key from 0 through 15 {
         .#{$marginKey}#{$separator}#{$key} {
             margin: sizeValue($key, $sizeUnit) !important;
         }
@@ -184,6 +184,14 @@
 
 .text-center {
     text-align: center;
+}
+
+.pulled-right {
+    float: right;
+}
+
+.pulled-left {
+    float: left;
 }
 
 @function makeColumns($key) {

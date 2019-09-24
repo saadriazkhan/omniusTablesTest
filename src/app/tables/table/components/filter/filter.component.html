@@ -18,9 +18,9 @@
             [ngClass]="config.formContainerClass ? config.formContainerClass :''">
             
             <div class="columns" *ngIf="config.equalsEnabled">
-                <div i18n class="column" 
+                <div class="column" 
                     [ngClass]="config.formFilterClass ? config.formFilterClass :''">
-                    Equals:
+                    {{languageConfig.Filter["Equals"]}}:
                 </div>
                 <div class="column"
                     [ngClass]="config.formInputClass ? config.formInputClass :''">
@@ -31,9 +31,9 @@
             
             <div *ngIf="config.rangeEnabled">
                 <div class="columns mt-2"> 
-                    <div i18n class="column"
+                    <div class="column"
                         [ngClass]="config.formFilterClass ? config.formFilterClass :''">
-                        From:
+                        {{languageConfig.Filter["From"]}}:
                     </div>
                     <div class="column"
                         [ngClass]="config.formInputClass ? config.formInputClass :''">
@@ -41,9 +41,9 @@
                     </div>
                 </div>
                 <div class="columns mt-2"> 
-                    <div i18n class="column"
+                    <div class="column"
                         [ngClass]="config.formFilterClass ? config.formFilterClass :''">
-                        To:
+                        {{languageConfig.Filter["To"]}}:
                     </div>
                     <div class="column"
                         [ngClass]="config.formInputClass ? config.formInputClass :''">
@@ -52,15 +52,15 @@
                 </div>
             </div>
 
-            <button i18n type="submit"
+            <button type="submit"
                 [ngClass]="config.formFilterButton ? config.formFilterButton :''"
                 [disabled]="filterButtonDisabled">
-                Filter
+                {{languageConfig.Filter["Filter"]}}
             </button>
         </form>
-        <button i18n (click)="clearFilter()"
+        <button (click)="clearFilter()"
             [ngClass]="config.formClearButton ? config.formClearButton :''">
-            Clear Filter
+            {{languageConfig.Filter["Clear Filter"]}}
         </button>
     </div>
 

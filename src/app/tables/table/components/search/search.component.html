@@ -2,21 +2,22 @@
     [ngClass]="config.searchContainerClass? config.searchContainerClass:'columns'">
     
     <form (ngSubmit)="onSubmit()"
-    [ngClass]="config.formContainerClass? config.formContainerClass:'columns'">
+        [ngClass]="config.formContainerClass? config.formContainerClass:'columns'">
+        
         <input 
             type="text" 
             (ngModelChange)="checkForValue()"
             [formControl]="searchValue"
             [ngClass]="config.inputClass ? config.inputClass : 'px-4'">
-        <button i18n 
+        <button 
             type="submit"
             [disabled]="searchButtonDisabled"
             [ngClass]="config.buttonClass ? config.buttonClass : 'primary-button p-2 mx-4 px-6'">
-            Search
+            {{languageConfig.Search["Search"]}}
         </button>
     </form>
-    <button i18n (click)="clearSearch()"
-        [ngClass]="config.clearButtonClass ? config.clearButtonClass : 'primary-button p-2 mx-4'">
-        Clear
+    <button (click)="clearSearch()"
+        [ngClass]="config.clearButtonClass ? config.clearButtonClass : 'primary-button p-2'">
+        {{languageConfig.Search["Clear"]}}
     </button>
 </div>
