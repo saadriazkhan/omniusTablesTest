@@ -10,7 +10,7 @@
         </select>
     </div>
     <div class="columns" *ngIf="config.paginationEnabled">
-        <div [ngClass]="config.pagesText ? config.pagesText : 'has-font-6 px-3 mt-2'">
+        <div i18n [ngClass]="config.pagesText ? config.pagesText : 'has-font-6 px-3 mt-2'">
             Pages: 
         </div>
         <div *ngFor="let page of givePagesArray(pages); let i = index">

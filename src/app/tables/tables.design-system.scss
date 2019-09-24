@@ -11,16 +11,13 @@
 @mixin fontAndBorderSizes($sizeUnit) {
     $fontKey: "has-font-";
     $heightKey: "has-height-";
+    $widthKey: "has-width-";
     $borderRadiusKey: "has-border-radius-";
     $borderKey: "has-border-";
     $opacityKey: "has-opacity-";
     $borderSizes: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     $sizes: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    @each $key in $sizes {
-        .#{$fontKey}#{$key} {
-            font-size: sizeValue($key, $sizeUnit) !important;
-        }
-    }
+    
     @each $key in $borderSizes {
         .#{$borderRadiusKey}#{$key} {
             border-radius: sizeValue($key, $sizeUnit) !important;
@@ -36,6 +33,12 @@
     @each $key in $sizes {
         .#{$heightKey}#{$key} {
             height: sizeValueHeight($key, $sizeUnit) !important;
+        }
+        .#{$widthKey}#{$key} {
+            width: sizeValueHeight($key, $sizeUnit) !important;
+        }
+        .#{$fontKey}#{$key} {
+            font-size: sizeValue($key, $sizeUnit) !important;
         }
     }
 }

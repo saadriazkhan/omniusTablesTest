@@ -1,18 +1,22 @@
 import { Filter } from './filter';
 import { Sort } from './sort';
+import { CurrencyPipe } from '@angular/common';
 
 export class Utility {
-    isNumber(val): boolean {
-        return typeof val === 'number';
+    isNumber(value:any): boolean {
+        return typeof value === 'number';
     }
-    isBoolean(val): boolean {
-        return typeof val === 'boolean';
+    isBoolean(value:any): boolean {
+        return typeof value === 'boolean';
     }
-    isArray(val): boolean {
-        return val instanceof Array;
+    isArray(value:any): boolean {
+        return value instanceof Array;
     }
-    isDate(val): boolean {
-        return val instanceof Date;
+    isDate(value:any): boolean {
+        return value instanceof Date;
+    }
+    isCurrency(value:any):boolean {
+        return value instanceof CurrencyPipe
     }
 }
 

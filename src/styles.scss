@@ -106,6 +106,13 @@ body {
         $buttonSecondaryBackgroundFocus
     );
 }
+.transparent-button {
+    @include button(
+        transparent,
+        black,
+        transparent
+    );
+}
 
 .white-button {
     @include button(

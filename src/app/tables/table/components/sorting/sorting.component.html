@@ -1,5 +1,5 @@
 <div *ngIf="config.enabled"
-    [ngClass]="config.sortingContainerClass ? config.sortingContainerClass : 'px-1'">
+    [ngClass]="config.sortingContainerClass ? config.sortingContainerClass : ''">
     
     <button (click)="applySorting()"
         [ngClass]="config.sortingButtonClass ? config.sortingButtonClass : 'mx-1 px-1'">

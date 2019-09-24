@@ -12,48 +12,53 @@
         class="position-absolute primary-dropdown"
         [ngClass]="config.dropdownContainerClass ? config.dropdownContainerClass :''">
         
-        <form (ngSubmit)="onSubmit()"
+        <form 
+            [formGroup]="form" 
+            (ngSubmit)="onSubmit()"
             [ngClass]="config.formContainerClass ? config.formContainerClass :''">
+            
             <div class="columns" *ngIf="config.equalsEnabled">
-                <div class="column" 
+                <div i18n class="column" 
                     [ngClass]="config.formFilterClass ? config.formFilterClass :''">
                     Equals:
                 </div>
                 <div class="column"
                     [ngClass]="config.formInputClass ? config.formInputClass :''">
                     <input type="text" 
-                    [formControl]="equalValue">
+                    formControlName="equalValue">
                 </div>
             </div>
+            
             <div *ngIf="config.rangeEnabled">
                 <div class="columns mt-2"> 
-                    <div class="column"
+                    <div i18n class="column"
                         [ngClass]="config.formFilterClass ? config.formFilterClass :''">
                         From:
                     </div>
                     <div class="column"
                         [ngClass]="config.formInputClass ? config.formInputClass :''">
-                        <input type="number" [formControl]="fromValue">
+                        <input type="number" formControlName="fromValue">
                     </div>
                 </div>
                 <div class="columns mt-2"> 
-                    <div class="column"
+                    <div i18n class="column"
                         [ngClass]="config.formFilterClass ? config.formFilterClass :''">
                         To:
                     </div>
                     <div class="column"
                         [ngClass]="config.formInputClass ? config.formInputClass :''">
-                        <input type="number" [formControl]="toValue">
+                        <input type="number" formControlName="toValue">
                     </div>
                 </div>
             </div>
 
-            <button type="submit"
-                [ngClass]="config.formFilterButton ? config.formFilterButton :''">
+            <button i18n type="submit"
+                [ngClass]="config.formFilterButton ? config.formFilterButton :''"
+                [disabled]="filterButtonDisabled">
                 Filter
             </button>
         </form>
-        <button (click)="clearFilter()"
+        <button i18n (click)="clearFilter()"
             [ngClass]="config.formClearButton ? config.formClearButton :''">
             Clear Filter
         </button>

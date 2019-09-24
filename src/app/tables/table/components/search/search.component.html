@@ -8,14 +8,14 @@
             (ngModelChange)="checkForValue()"
             [formControl]="searchValue"
             [ngClass]="config.inputClass ? config.inputClass : 'px-4'">
-        <button 
+        <button i18n 
             type="submit"
             [disabled]="searchButtonDisabled"
             [ngClass]="config.buttonClass ? config.buttonClass : 'primary-button p-2 mx-4 px-6'">
             Search
         </button>
     </form>
-    <button (click)="clearSearch()"
+    <button i18n (click)="clearSearch()"
         [ngClass]="config.clearButtonClass ? config.clearButtonClass : 'primary-button p-2 mx-4'">
         Clear
     </button>

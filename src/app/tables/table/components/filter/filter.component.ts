@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Filter } from '../models/filter';
 
@@ -20,38 +20,45 @@ export class FilterComponent {
 		formFilterClass: 'is-4',
 		formFilterButton: 'mt-4',
 		formClearButton: '',
-		formInputClass:''
+		formInputClass: ''
 	};
 
 	@Output() resetFilterEmitter = new EventEmitter<Filter>();
 	@Output() filterSelectedEmitter = new EventEmitter<Filter[]>();
 
-
-	equalValue = new FormControl('');
-	fromValue = new FormControl('');
-	toValue = new FormControl('');
-
 	showDropdown = false;
 
-	constructor() { }
+	form;
+	filterButtonDisabled: boolean = true;
+
+	constructor(private formBuilder: FormBuilder) {
+		this.form = formBuilder.group({
+			equalValue: new FormControl('', Validators.required),
+			fromValue: new FormControl(''),
+			toValue: new FormControl('')
+		});
+		this.form.valueChanges.subscribe(data => {
+			this.filterButtonDisabled = (data.equalValue == "" && data.fromValue == "" && data.toValue == "") ? true : false;
+		});
+	}
 
 	onSubmit() {
 		this.showDropdown = false;
 		const filterArray: { fieldName: string, method: string, parameters: string | number[] }[] = [];
 
-		if (this.equalValue.value.length > 0) {
+		if (this.form.get('equalValue').value.length > 0) {
 			filterArray.push({
 				fieldName: this.fieldName,
 				method: "EQUALS",
-				parameters: this.equalValue.value
+				parameters: this.form.get('equalValue').value
 			});
 		}
 
-		if (this.fromValue.value != "" && this.toValue.value != "") {
+		if (this.form.get('fromValue').value != "" && this.form.get('toValue').value != "") {
 			filterArray.push({
 				fieldName: this.fieldName,
 				method: "RANGE",
-				parameters: [this.fromValue.value, this.toValue.value]
+				parameters: [this.form.get('fromValue').value, this.form.get('toValue').value]
 			});
 		}
 		console.log(filterArray);
@@ -59,9 +66,9 @@ export class FilterComponent {
 	}
 
 	clearFilter() {
-		this.equalValue.setValue('');
-		this.toValue.setValue('');
-		this.fromValue.setValue('');
+		this.form.equalValue.setValue('');
+		this.form.toValue.setValue('');
+		this.form.fromValue.setValue('');
 		this.resetFilterEmitter.emit({ fieldName: this.fieldName });
 	}
 }

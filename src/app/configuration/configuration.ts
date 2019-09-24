@@ -5,9 +5,12 @@ interface TableConfig {
     editTableButtonContainerClass?: string
     hideColumnButtonClass?: string
     showColumnButtonClass?: string
+    hideColumnButtonIconClass?: string
+    showColumnButtonIconClass?: string
     tableContainerClass?: string
     tableHeadContainerClass?: string
     tableHeaderItemClass?: string
+    tableHeaderTextClass?: string
     tableBodyContainerClass?: string
     tableRowClass?: string
     tableRowCheckboxClass?: string
