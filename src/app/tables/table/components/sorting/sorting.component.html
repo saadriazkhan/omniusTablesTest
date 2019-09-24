@@ -1,14 +1,22 @@
-<div *ngIf="sortingEnabled">
-    <button (click)="applySorting()">
+<div *ngIf="config.enabled"
+    [ngClass]="config.sortingContainerClass ? config.sortingContainerClass : 'px-1'">
+    
+    <button (click)="applySorting()"
+        [ngClass]="config.sortingButtonClass ? config.sortingButtonClass : 'mx-1 px-1'">
+        
         <div *ngIf="selectedSortOrder == 1">
-            <i class="fa fa-arrow-up"></i>
-            <i class="fa fa-arrow-down"></i>
+            <div class="columns">
+                <i class="has-opacity-3" [ngClass]="config.sortingUpClass ? config.sortingUpClass : 'fa fa-caret-up'"></i>
+                <i class="has-opacity-3" [ngClass]="config.sortingDownClass ? config.sortingDownClass : 'fa fa-caret-down'"></i>
+            </div>
         </div>
+
         <div *ngIf="selectedSortOrder == 2">
-            <i class="fa fa-arrow-up"></i>
+            <i [ngClass]="config.sortingUpClass ? config.sortingUpClass : 'fa fa-caret-up'"></i>
         </div>
+        
         <div *ngIf="selectedSortOrder == 3">
-            <i class="fa fa-arrow-down"></i>
+            <i [ngClass]="config.sortingDownClass ? config.sortingDownClass : 'fa fa-caret-down'"></i>
         </div>
     </button>
 </div>

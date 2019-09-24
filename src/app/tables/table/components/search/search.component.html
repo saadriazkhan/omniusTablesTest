@@ -1,7 +1,22 @@
-<div *ngIf="searchEnabled">
-    <form (ngSubmit)="onSubmit()">
-        <input type="text" [formControl]="searchValue">
-        <button type="submit">Search</button>
+<div *ngIf="config.searchEnabled"
+    [ngClass]="config.searchContainerClass? config.searchContainerClass:'columns'">
+    
+    <form (ngSubmit)="onSubmit()"
+    [ngClass]="config.formContainerClass? config.formContainerClass:'columns'">
+        <input 
+            type="text" 
+            (ngModelChange)="checkForValue()"
+            [formControl]="searchValue"
+            [ngClass]="config.inputClass ? config.inputClass : 'px-4'">
+        <button 
+            type="submit"
+            [disabled]="searchButtonDisabled"
+            [ngClass]="config.buttonClass ? config.buttonClass : 'primary-button p-2 mx-4 px-6'">
+            Search
+        </button>
     </form>
-    <button (click)="clearSearch()">Clear Search</button>
+    <button (click)="clearSearch()"
+        [ngClass]="config.clearButtonClass ? config.clearButtonClass : 'primary-button p-2 mx-4'">
+        Clear
+    </button>
 </div>

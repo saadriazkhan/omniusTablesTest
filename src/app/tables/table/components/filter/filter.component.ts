@@ -10,12 +10,17 @@ import { Filter } from '../models/filter';
 export class FilterComponent {
 
 	@Input() fieldName: string = "";
-	@Input() filterConfig?: { enabled: boolean, filtersEnabled: { equals: boolean, range: boolean } } = {
+	@Input() config = { // default
 		enabled: true,
-		filtersEnabled: {
-			range: true,
-			equals: true
-		}
+		rangeEnabled: true,
+		equalsEnabled: true,
+		filterButtonClass: 'ml-2 px-2 py-1 white-button',
+		dropdownContainerClass: 'p-4 has-border-radius-2',
+		formContainerClass: 'p-2',
+		formFilterClass: 'is-4',
+		formFilterButton: 'mt-4',
+		formClearButton: '',
+		formInputClass:''
 	};
 
 	@Output() resetFilterEmitter = new EventEmitter<Filter>();
@@ -42,7 +47,7 @@ export class FilterComponent {
 			});
 		}
 
-		if (this.fromValue.value != null && this.toValue.value != null) {
+		if (this.fromValue.value != "" && this.toValue.value != "") {
 			filterArray.push({
 				fieldName: this.fieldName,
 				method: "RANGE",

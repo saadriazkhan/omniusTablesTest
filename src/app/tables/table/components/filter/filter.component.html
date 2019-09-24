@@ -1,33 +1,62 @@
-<div (appClickOutside)="showDropdown=false" *ngIf="filterConfig.enabled">
-    <button class="filter-button" (click)="showDropdown=!showDropdown;">
-        <i class=" fa fa-arrow-down"></i>
+<div 
+    (appClickOutside)="showDropdown = false" 
+    *ngIf="config.enabled">
+    
+    <button 
+        (click)="showDropdown=!showDropdown;"
+        [ngClass]="config.filterButtonClass ? config.filterButtonClass:'mx-2'">
+        <i class=" fa fa-caret-down"></i>
     </button>
-    <div class="pos-absolute dropdown" *ngIf="showDropdown">
-        <form (ngSubmit)="onSubmit()">
-            <div *ngIf="filterConfig.filtersEnabled.equals">
-                Equals:
-                <span>
-                    <input type="text" [formControl]="equalValue">
-                </span>
-            </div>
-            <div *ngIf="filterConfig.filtersEnabled.range">
-                <div>
-                    From:
-                    <span>
-                        <input type="number" [formControl]="fromValue">
-                    </span>
+
+    <div *ngIf="showDropdown"
+        class="position-absolute primary-dropdown"
+        [ngClass]="config.dropdownContainerClass ? config.dropdownContainerClass :''">
+        
+        <form (ngSubmit)="onSubmit()"
+            [ngClass]="config.formContainerClass ? config.formContainerClass :''">
+            <div class="columns" *ngIf="config.equalsEnabled">
+                <div class="column" 
+                    [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                    Equals:
                 </div>
-                <div>
-                    To:
-                    <span>
+                <div class="column"
+                    [ngClass]="config.formInputClass ? config.formInputClass :''">
+                    <input type="text" 
+                    [formControl]="equalValue">
+                </div>
+            </div>
+            <div *ngIf="config.rangeEnabled">
+                <div class="columns mt-2"> 
+                    <div class="column"
+                        [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                        From:
+                    </div>
+                    <div class="column"
+                        [ngClass]="config.formInputClass ? config.formInputClass :''">
+                        <input type="number" [formControl]="fromValue">
+                    </div>
+                </div>
+                <div class="columns mt-2"> 
+                    <div class="column"
+                        [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                        To:
+                    </div>
+                    <div class="column"
+                        [ngClass]="config.formInputClass ? config.formInputClass :''">
                         <input type="number" [formControl]="toValue">
-                    </span>
+                    </div>
                 </div>
             </div>
 
-            <button type="submit">Filter</button>
+            <button type="submit"
+                [ngClass]="config.formFilterButton ? config.formFilterButton :''">
+                Filter
+            </button>
         </form>
-        <button (click)="clearFilter()">Clear Filter</button>
+        <button (click)="clearFilter()"
+            [ngClass]="config.formClearButton ? config.formClearButton :''">
+            Clear Filter
+        </button>
     </div>
 
 </div>

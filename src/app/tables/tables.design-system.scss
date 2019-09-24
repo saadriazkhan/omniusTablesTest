@@ -1,26 +1,50 @@
+@function sizeValue($key, $sizeUnit) {
+    @return if($key == "0", 0, ($key * 2.5) + $sizeUnit);
+}
+@function sizeValueOpacity($key) {
+    @return $key / 10;
+}
+@function sizeValueHeight($key, $sizeUnit) {
+    @return if($key == "0", 0, ($key * 5) + $sizeUnit);
+}
 
-@function sizeValue($key, $value, $sizeUnit) {
-    @return if($key == "0", 0, $value + $sizeUnit);
+@mixin fontAndBorderSizes($sizeUnit) {
+    $fontKey: "has-font-";
+    $heightKey: "has-height-";
+    $borderRadiusKey: "has-border-radius-";
+    $borderKey: "has-border-";
+    $opacityKey: "has-opacity-";
+    $borderSizes: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    $sizes: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    @each $key in $sizes {
+        .#{$fontKey}#{$key} {
+            font-size: sizeValue($key, $sizeUnit) !important;
+        }
+    }
+    @each $key in $borderSizes {
+        .#{$borderRadiusKey}#{$key} {
+            border-radius: sizeValue($key, $sizeUnit) !important;
+        }
+        .#{$borderKey}#{$key} {
+            border-radius: sizeValue($key, $sizeUnit) !important;
+        }
+        .#{$opacityKey}#{$key} {
+            opacity: sizeValueOpacity($key) !important;
+        }
+    }
+
+    @each $key in $sizes {
+        .#{$heightKey}#{$key} {
+            height: sizeValueHeight($key, $sizeUnit) !important;
+        }
+    }
 }
 
 @mixin designBasics($sizeUnit) {
-    
     $marginKey: "m";
     $paddingKey: "p";
     $separator: "-";
-    $sizes: (
-        "0": 0,
-        "1": 2,
-        "2": 4,
-        "3": 6,
-        "4": 8,
-        "5": 10,
-        "6": 12,
-        "7": 14,
-        "8": 16,
-        "9": 18,
-        "10": 20
-    );
+    $sizes: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     $positions: (
         "t": "top",
         "r": "right",
@@ -36,65 +60,158 @@
         e.g. mt-1 pt-2 mx-2 px-9 etc 
     */
 
-    @each $key, $value in $sizes {
+    @each $key in $sizes {
         .#{$marginKey}#{$separator}#{$key} {
-            margin: sizeValue($key, $value, $sizeUnit) !important;
+            margin: sizeValue($key, $sizeUnit) !important;
         }
         .#{$paddingKey}#{$separator}#{$key} {
-            padding: sizeValue($key, $value, $sizeUnit) !important;
+            padding: sizeValue($key, $sizeUnit) !important;
         }
 
         @each $positionKey, $positionValue in $positions {
             .#{$marginKey}#{$positionKey}#{$separator}#{$key} {
-                margin-#{$positionValue}: sizeValue($key, $value, $sizeUnit) !important;
+                margin-#{$positionValue}: sizeValue($key, $sizeUnit) !important;
             }
             .#{$paddingKey}#{$positionKey}#{$separator}#{$key} {
-                padding-#{$positionValue}: sizeValue($key, $value, $sizeUnit) !important;
+                padding-#{$positionValue}: sizeValue(
+                    $key,
+                    $sizeUnit
+                ) !important;
             }
         }
         @each $superPositionKey, $superPositionValue in $superPositions {
             @if ($superPositionKey == "x") {
                 .#{$marginKey}#{$superPositionKey}#{$separator}#{$key} {
-                    margin-left: sizeValue($key, $value, $sizeUnit) !important;
-                    margin-right: sizeValue($key, $value, $sizeUnit) !important;
+                    margin-left: sizeValue($key, $sizeUnit) !important;
+                    margin-right: sizeValue($key, $sizeUnit) !important;
                 }
                 .#{$paddingKey}#{$superPositionKey}#{$separator}#{$key} {
-                    padding-left: sizeValue($key, $value, $sizeUnit) !important;
-                    padding-right: sizeValue($key, $value, $sizeUnit) !important;
+                    padding-left: sizeValue($key, $sizeUnit) !important;
+                    padding-right: sizeValue($key, $sizeUnit) !important;
                 }
             }
             @if ($superPositionKey == "y") {
                 .#{$marginKey}#{$superPositionKey}#{$separator}#{$key} {
-                    margin-top: sizeValue($key, $value, $sizeUnit) !important;
-                    margin-bottom: sizeValue($key, $value, $sizeUnit) !important;
+                    margin-top: sizeValue($key, $sizeUnit) !important;
+                    margin-bottom: sizeValue($key, $sizeUnit) !important;
                 }
                 .#{$paddingKey}#{$superPositionKey}#{$separator}#{$key} {
-                    padding-top: sizeValue($key, $value, $sizeUnit) !important;
-                    padding-bottom: sizeValue($key, $value, $sizeUnit) !important;
+                    padding-top: sizeValue($key, $sizeUnit) !important;
+                    padding-bottom: sizeValue($key, $sizeUnit) !important;
                 }
             }
         }
     }
 }
 
-
 @mixin dropdown($background: white, $borderColor: black, $borderWidth: 1px) {
-    .dropdown {
-        z-index: 1;
-        background: $background;
-        border: $borderWidth solid $borderColor;
+    z-index: 1;
+    background: $background;
+    border: $borderWidth solid $borderColor;
+}
 
+@mixin button(
+    $buttonBackground: #dddddd,
+    $buttonColor: black,
+    $buttonBorderColor: #bebbbb,
+    $buttonFocus: #aca7a7,
+    $backgroundDisabled: #d6cfcf
+) {
+    background: $buttonBackground;
+    border: 1px solid $buttonBorderColor;
+    border-radius: 2px;
+    padding: 5px 10px;
+    color: $buttonColor;
+
+    &:active {
+        background: $buttonFocus;
+    }
+    &:focus {
+        outline: none;
+    }
+    &.selected {
+        background: $buttonFocus;
+    }
+    &:disabled {
+        background: $backgroundDisabled;
+        opacity: 0.7;
     }
 }
 
-.is-flex {
-    display: flex;
+@mixin tables($theme) {
+    table {
+        font-family: map_get($theme, "fontFamily");
+        background: map_get($theme, "tableBackground");
+        border-collapse: map_get($theme, "collapseBorder");
+        border: map_get($theme, "borderWidth") solid
+            map_get($theme, "borderColor");
+    }
+    thead {
+        background: map_get($theme, "tableHeadBackground");
+        td,
+        th {
+            border: map_get($theme, "borderWidth") solid
+                map_get($theme, "borderColor");
+        }
+    }
+    tbody {
+        td,
+        th {
+            border: map_get($theme, "borderWidth") solid
+                map_get($theme, "borderColor");
+        }
+    }
+
+    tr:nth-child(even) {
+        background-color: map_get($theme, "tableEvenRowBackground");
+    }
+
+    tr:hover {
+        background-color: map_get($theme, "tableRowHoverBackground");
+    }
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+@function makeColumns($key) {
+    @return ($key / 12) * 100%;
+}
+
+@mixin column-widths {
+    $classKey: "is-";
+    $width: 100%;
+    $columns: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+
+    @each $key in $columns {
+        .#{$classKey}#{$key} {
+            flex: none;
+            width: makeColumns($key) !important;
+        }
+    }
+
+    .is-narrow {
+        flex: none;
+    }
+}
+
+input {
+    width: 100%;
 }
 
 .d-none {
     display: none;
 }
 
-.pos-absolute {
+.position-absolute {
     position: absolute;
 }

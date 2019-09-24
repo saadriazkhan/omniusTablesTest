@@ -7,12 +7,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
 
-	@Input() pages: number = 5; // random page count atm
+	@Input() pages: number = 1; // default
 	@Input() pageSizes: number[] = [25, 50, 75, 100];
 
-	@Input() config: { pageSizesEnabled: boolean, paginationEnabled: boolean } = {
+	@Input() config = { // default
 		pageSizesEnabled: true,
-		paginationEnabled: true
+		paginationEnabled: true,
+		buttonClass: 'secondary-button mx-2 py-2 px-5',
+		pageSizeClass: 'primary-button mr-10',
+		pagesText: 'has-font-6 px-3 mt-2'
 	};
 
 	@Output() pageChangeEmitter = new EventEmitter<number>();
@@ -32,6 +35,7 @@ export class PaginationComponent implements OnInit {
 	}
 
 	changePage(page: number): void {
+		this.pageSelected = page;
 		this.pageChangeEmitter.emit(page);
 	}
 

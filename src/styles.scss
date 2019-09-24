@@ -1,12 +1,137 @@
 @import "app/tables/tables.design-system";
 
-$background: #dcdcdc;
-$borderColor: #717171;
-$borderWidth: 1px;
+$bodyBackground: #e8e8e8;
+$designForPixel: px;
 
-$designForPixel:px;
+$backgroundPrimary: #f8f8f8;
+$backgroundSecondary: #b1b1b1;
+
+$rowHoverPrimary: #f2f2f2;
+$rowHoverSecondary: #cacaca;
+
+$borderColorPrimary: #575757;
+$borderColorSecondary: #910000;
+
+$tableHeaderBackgroundPrimary: #c7cabd;
+$tableHeaderBackgroundSecondary: #5f60d4;
+
+$tableRowBackgroundPrimary: #f5f5f5;
+$tableRowBackgroundSecondary: #c5c2c2;
+
+$tableRowHoverBackgroundPrimary: #f3d3d3;
+$tableRowHoverBackgroundSecondary: #b39d9d;
+
+$tableEvenRowBackgroundPrimary: #b7d6ff;
+$tableEvenRowBackgroundSecondary: #d0cbff;
+
+$borderWidthPrimary: 1px;
+$borderWidthSecondary: 2px;
+
+$fontFamilyPrimary: sans-serif;
+$fontFamilySecondary: Arial;
+
+$fontFamilyPrimary: sans-serif;
+$fontFamilySecondary: Arial;
+
+$fontFamilyPrimary: sans-serif;
+$fontFamilySecondary: Arial;
+
+$buttonPrimaryBackground: #c3c3c3;
+$buttonSecondaryBackground: #536fbb;
+
+$buttonPrimaryBackgroundFocus: #db9b9b;
+$buttonSecondaryBackgroundFocus: #092570;
 
 @include designBasics($designForPixel);
 // @include designBasics($designForRem);
 
-@include dropdown($background, $borderColor, $borderWidth);
+.primary-dropdown {
+    @include dropdown($backgroundPrimary, $borderColorPrimary, $borderWidthPrimary);
+}
+
+.secondary-dropdown {
+    @include dropdown($backgroundSecondary, $borderColorSecondary, $borderWidthSecondary);
+}
+
+$themePrimary: (
+    "tableBackground": $backgroundPrimary,
+    "fontFamily": $fontFamilyPrimary,
+    "tableHeadBackground": $tableHeaderBackgroundPrimary,
+    "tableRowBackground": $tableRowBackgroundPrimary,
+    "tableEvenRowBackground": $tableEvenRowBackgroundPrimary,
+    "tableRowHoverBackground": $tableRowHoverBackgroundPrimary,
+    "borderWidth": $borderWidthPrimary,
+    "borderColor": $borderColorPrimary,
+    "collapseBorder": collapse
+);
+
+$themeSecondary: (
+    "tableBackground": $backgroundSecondary,
+    "fontFamily": $fontFamilySecondary,
+    "tableHeadBackground": $tableHeaderBackgroundSecondary,
+    "tableRowBackground": $tableRowBackgroundSecondary,
+    "tableEvenRowBackground": $tableEvenRowBackgroundSecondary,
+    "tableRowHoverBackground": $tableRowHoverBackgroundSecondary,
+    "borderWidth": $borderWidthSecondary,
+    "borderColor": $borderColorSecondary,
+    "collapseBorder": separate
+);
+
+body {
+    background: $bodyBackground;
+    font-family: $fontFamilyPrimary;
+}
+.primary {
+    @include tables($themePrimary);
+}
+
+.secondary {
+    @include tables($themeSecondary);
+}
+
+.primary-button {
+    @include button(
+        $buttonPrimaryBackground,
+        black,
+        grey,
+        $buttonPrimaryBackgroundFocus
+    );
+}
+
+.secondary-button {
+    @include button(
+        $buttonSecondaryBackground,
+        white,
+        grey,
+        $buttonSecondaryBackgroundFocus
+    );
+}
+
+.white-button {
+    @include button(
+        white,
+    );
+}
+
+
+.columns {
+    display: flex;
+}
+
+.column {
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+@include column-widths();
+
+
+button {
+    @include button();
+}
+
+
+
+@include fontAndBorderSizes($designForPixel);

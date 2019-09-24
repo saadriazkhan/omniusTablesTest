@@ -9,12 +9,20 @@ import { FormControl } from '@angular/forms';
 export class SearchComponent {
 
 	@Input() placeholder?: string = "";
-	@Input() searchEnabled?: boolean = true;
+	@Input() config = { // default
+		searchEnabled: true,
+		searchContainerClass: '',
+		formContainerClass: '',
+		inputClass: '',
+		buttonClass: '',
+		clearButtonClass: ''
+	};
 
 	@Output() searchValueEmitter = new EventEmitter<string>();
 	@Output() resetSearchEmitter = new EventEmitter();
 
 	searchValue = new FormControl('');
+	searchButtonDisabled: boolean = true;
 
 	constructor() { }
 
@@ -23,7 +31,12 @@ export class SearchComponent {
 			this.searchValueEmitter.emit(this.searchValue.value) : this.clearSearch();
 	}
 
+	checkForValue() {
+		this.searchButtonDisabled = (this.searchValue.value == "") ? true : false;
+	}
+
 	clearSearch(): void {
+		this.searchButtonDisabled = true;
 		this.searchValue.setValue("");
 		this.resetSearchEmitter.emit();
 	}
