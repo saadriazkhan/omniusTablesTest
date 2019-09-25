@@ -1,7 +1,8 @@
-<div>
-    <div class="columns has-height-6">
-        <div class="column is-narrow has-font-6 mr-4 pt-2" *ngIf="hiddenColumnsArray.length > 0">
-            {{languageConfig["Hidden Columns"]}};
+    <div class="columns has-height-6 mb-4">
+        <div class="column has-font-6 mr-4 pt-2" *ngIf="hiddenColumnsArray.length > 0">
+            <div class="pulled-right">
+                {{languageConfig["Hidden Columns"]}}:
+            </div>
         </div>
         <div class="column">
             <div class="position-absolute columns is-font-6">
@@ -14,152 +15,151 @@
             </div>
         </div>
     </div>
-
-    <div class="columns">
-        <div class="column">
-            <div [ngClass]="config.editTableButtonContainerClass ? config.editTableButtonContainerClass:''">
-            
-                <button (click)="toggleEditMode()" 
-                    [ngClass]="config.editTableButtonClass ? (editEnabled) ? config.editTableButtonClass + ' selected': config.editTableButtonClass :'px-2 my-4'">
-                    <span *ngIf="editEnabled">
-                        {{languageConfig["Edit Mode On"]}}
-                    </span>
-                    <span *ngIf="!editEnabled">
-                        {{languageConfig["Edit Mode Off"]}}
-                    </span>
-                </button>
-            </div>
-        </div>
-        <div class="column">
-            <div class="pulled-left">
-                <ng-container>
-                    <app-search 
-                        [config]="tablesConfig['SearchConfig']"
-                        [placeholder]="'Search anything here'"
-                        (searchValueEmitter)="searchData($event)"
-                        (resetSearchEmitter)="resetSearch()">
-                    </app-search>
-                </ng-container>
-            </div>
-        </div>
-    </div>
-    
-    <div class="columns">
-        <div class="mt-15" 
-            [ngClass]="config.theme?config.theme:''">
-            
-            <table  [ngClass]="config.tableContainerClass ?config.tableContainerClass : ''">
-    
-                <thead [ngClass]="config.tableHeadContainerClass ?config.tableHeadContainerClass : ''">
-                    <th *ngFor="let head of objectKeys; let i = index">
-                        
-                        <div [ngClass]="config.tableHeaderItemClass ?config.tableHeaderItemClass : ''" >
-                            <div *ngIf="!hiddenColumnsArray.includes(head);
-                                then condition1 else condition2">
-                            </div>
-                            
-                            <ng-template #condition1>
-                                <div class="columns">
-                                    <div class="column">
-                                        <button 
-                                            class="pulled-right"
-                                            [ngClass]="config.hideColumnButtonClass ? config.hideColumnButtonClass : ''"    
-                                            (click)="hideColumn(head)" >
-                                            <i [ngClass]="config.hideColumnButtonIconClass ? config.hideColumnButtonIconClass : 'fa fa-minus'"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="columns">
-    
-                                    <div class="column">
-                                        <app-sorting
-                                            [config]="tablesConfig['SortingConfig']" 
-                                            [field]="head"
-                                            (sortingEmitter)="sortData($event)">
-                                        </app-sorting>
-                                    </div>
-                                    
-                                    <div class="column">
-                                        <div [ngClass]="config.tableHeaderTextClass ? config.tableHeaderTextClass : ''">
-                                            {{head | titlecase}}
-                                        </div>
-                                    </div>
-    
-                                    <div class="column">
-                                        <app-filter
-                                            [config]="tablesConfig['FilterConfig']" 
-                                            [field]="head" 
-                                            (resetFilterEmitter)="resetFilterData($event)" 
-                                            (filterSelectedEmitter)="filterData($event)">
-                                        </app-filter>
-                                    </div>
-                                </div>                
-                            </ng-template>
-    
-                            <ng-template #condition2>
+<div class="columns">
+    <div class="column">
+        <div [ngClass]="config.editTableButtonContainerClass ? config.editTableButtonContainerClass:''">
         
-                                <button 
-                                    [ngClass]="config.showColumnButtonClass ? config.showColumnButtonClass : ''"
-                                    (click)="showColumn(head)">
-                                    <i [ngClass]="config.showColumnButtonIconClass ? config.showColumnButtonIconClass : 'fa fa-plus'"></i>
-                                </button>
-                            </ng-template>
-                        </div>
-                    </th>
-                </thead>
-    
-                <tbody [ngClass]="config.tableBodyContainerClass ?config.tableBodyContainerClass : ''">
-    
-                    <tr [ngClass]="config.tableRowClass ?config.tableRowClass : ''"
-                        *ngFor="let item of tableData; let i = index">
-    
-                        <td [ngClass]="config.tableRowDataClass ?config.tableRowDataClass : ''"
-                            *ngFor="let value of item | tableValueItem; let j = index;"
-                            (input)="saveTableData($event,i,j)">
-                           
-                            <div [ngClass]="hiddenColumnsArray.includes(value)?'d-none':''">
-                                <div *ngIf="editEnabled; then editCell else dontEditCell">
-                                </div>
-
-                                <ng-template #editCell>
-                                    <div *ngIf="utility.isBoolean(item[value]); else notBoolean">
-                                        <input type="checkbox" [checked]="item[value]">
-                                    </div>
-                                    <ng-template #notBoolean>
-                                        <div contenteditable="true">
-                                            {{item[value]}}
-                                        </div>
-                                    </ng-template>
-                                </ng-template>
-                                
-                                <ng-template #dontEditCell>
-                                    <div *ngIf="utility.isBoolean(item[value]); else notBoolean">
-                                        <input type="checkbox" [checked]="item[value]" onclick="return false">
-                                    </div>
-                                    <ng-template #notBoolean>
-                                        <div>
-                                            {{item[value]}}
-                                        </div>
-                                    </ng-template>
-                                </ng-template>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <button (click)="toggleEditMode()" 
+                [ngClass]="config.editTableButtonClass ? (editEnabled) ? config.editTableButtonClass + ' selected': config.editTableButtonClass :'px-2 my-4'">
+                <span *ngIf="editEnabled">
+                    {{languageConfig["Edit Mode On"]}}
+                </span>
+                <span *ngIf="!editEnabled">
+                    {{languageConfig["Edit Mode Off"]}}
+                </span>
+            </button>
         </div>
     </div>
-    
-    <app-pagination 
-        [config]="tablesConfig['PaginationConfig']"
-        [pages]="5"
-        [pageSizes]="pageSizes"
-        [defaultPageSize]="tablesConfig['defaultPageSize']"
-        (pageChangeEmitter)="pageChange($event)"
-        (pageSizeChangeEmiiter)="pageSizeChange($event)">
-        <!-- config -->
-    </app-pagination>
-
+    <div class="column">
+        <div class="pulled-left">
+            <ng-container>
+                <app-search 
+                    [config]="tablesConfig['SearchConfig']"
+                    [placeholder]="'Search anything here'"
+                    (searchValueEmitter)="searchData($event)"
+                    (resetSearchEmitter)="resetSearch()">
+                </app-search>
+            </ng-container>
+        </div>
+    </div>
 </div>
 
+<div class="columns">
+    <div class="mt-15 column" 
+        [ngClass]="config.theme?config.theme:''">
+        
+        <table  [ngClass]="config.tableContainerClass ?config.tableContainerClass : ''">
+
+            <thead [ngClass]="config.tableHeadContainerClass ?config.tableHeadContainerClass : ''">
+                <th *ngFor="let head of objectKeys; let i = index">
+                    
+                    <div [ngClass]="config.tableHeaderItemClass ?config.tableHeaderItemClass : ''" >
+                        <div *ngIf="!hiddenColumnsArray.includes(head);
+                            then condition1 else condition2">
+                        </div>
+                        
+                        <ng-template #condition1>
+                            <div class="columns">
+                                <div class="column">
+                                    <button 
+                                        class="pulled-right"
+                                        [ngClass]="config.hideColumnButtonClass ? config.hideColumnButtonClass : ''"    
+                                        (click)="hideColumn(head)" >
+                                        <i [ngClass]="config.hideColumnButtonIconClass ? config.hideColumnButtonIconClass : 'fa fa-minus'"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="columns">
+
+                                <div class="column">
+                                    <app-sorting
+                                        [config]="tablesConfig['SortingConfig']" 
+                                        [field]="head"
+                                        (sortingEmitter)="sortData($event)">
+                                    </app-sorting>
+                                </div>
+                                
+                                <div class="column">
+                                    <div [ngClass]="config.tableHeaderTextClass ? config.tableHeaderTextClass : ''">
+                                        {{head | titlecase}}
+                                    </div>
+                                </div>
+
+                                <div class="column">
+                                    <app-filter
+                                        [config]="tablesConfig['FilterConfig']" 
+                                        [field]="head" 
+                                        (resetFilterEmitter)="resetFilterData($event)" 
+                                        (filterSelectedEmitter)="filterData($event)">
+                                    </app-filter>
+                                </div>
+                            </div>                
+                        </ng-template>
+
+                        <ng-template #condition2>
+    
+                            <button 
+                                [ngClass]="config.showColumnButtonClass ? config.showColumnButtonClass : ''"
+                                (click)="showColumn(head)">
+                                <i [ngClass]="config.showColumnButtonIconClass ? config.showColumnButtonIconClass : 'fa fa-plus'"></i>
+                            </button>
+                        </ng-template>
+                    </div>
+                </th>
+            </thead>
+
+            <tbody [ngClass]="config.tableBodyContainerClass ?config.tableBodyContainerClass : ''">
+
+                <tr [ngClass]="config.tableRowClass ?config.tableRowClass : ''"
+                    *ngFor="let item of tableData; let i = index">
+
+                    <td [ngClass]="config.tableRowDataClass ?config.tableRowDataClass : ''"
+                        *ngFor="let value of item | tableValueItem; let j = index;"
+                        (input)="saveTableData($event,i,j)">
+                        
+                        <div [ngClass]="hiddenColumnsArray.includes(value)?'d-none':''">
+                            <div *ngIf="editEnabled; then editCell else dontEditCell">
+                            </div>
+
+                            <ng-template #editCell>
+                                <div *ngIf="utility.isBoolean(item[value]); else notBoolean">
+                                    <input type="checkbox" [checked]="item[value]">
+                                </div>
+                                <ng-template #notBoolean>
+                                    <div contenteditable="true">
+                                        {{item[value]}}
+                                    </div>
+                                </ng-template>
+                            </ng-template>
+                            
+                            <ng-template #dontEditCell>
+                                <div *ngIf="utility.isBoolean(item[value]); else notBoolean">
+                                    <input type="checkbox" [checked]="item[value]" onclick="return false">
+                                </div>
+                                <ng-template #notBoolean>
+                                    <div>
+                                        {{item[value]}}
+                                    </div>
+                                </ng-template>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column">
+        <app-pagination 
+            [config]="tablesConfig['PaginationConfig']"
+            [pages]="5"
+            [pageSizes]="pageSizes"
+            [defaultPageSize]="tablesConfig['defaultPageSize']"
+            (pageChangeEmitter)="pageChange($event)"
+            (pageSizeChangeEmiiter)="pageSizeChange($event)">
+        </app-pagination>
+    </div>
+</div>

@@ -45,9 +45,9 @@ export class TableComponent implements Tables {
 	languageConfig: any = {};
 	tableData = [];
 
+
 	@Input() tablesConfig = {};
 	@Input() tableDataSubject = new Subject();
-
 	@Output() sortEventEmitter = new EventEmitter();
 	@Output() searchEventEmitter = new EventEmitter();
 	@Output() filterEventEmitter = new EventEmitter();
@@ -192,4 +192,6 @@ export class TableComponent implements Tables {
 		}
 		return newData;
 	}
+
+	ngOnDestroy() { }
 }

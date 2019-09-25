@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { I18nService } from '../../../../i18n/i18n.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-search',
@@ -24,10 +26,17 @@ export class SearchComponent {
 
 	searchValue = new FormControl('');
 	searchButtonDisabled: boolean = true;
+	searchClearButtonDisabled: boolean = true;
 
+	searchSubject = new Subject();
 	languageConfig: any = {};
 	constructor(private languageService: I18nService) {
 		this.languageConfig = this.languageService.getLocaleConfig();
+		this.searchSubject
+			.pipe(debounceTime(400), distinctUntilChanged())
+			.subscribe(data => {
+				this.onSubmit();
+			});
 	}
 
 	onSubmit(): void {
@@ -36,12 +45,15 @@ export class SearchComponent {
 	}
 
 	checkForValue() {
+		this.searchSubject.next(this.searchValue.value);
 		this.searchButtonDisabled = (this.searchValue.value == "") ? true : false;
+		this.searchClearButtonDisabled = (this.searchValue.value == "") ? true : false;
 	}
 
 	clearSearch(): void {
 		this.searchButtonDisabled = true;
+		this.searchClearButtonDisabled = false;
 		this.searchValue.setValue("");
-		this.resetSearchEmitter.emit();
+		this.resetSearchEmitter.emit("");
 	}
 }

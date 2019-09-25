@@ -16,7 +16,7 @@ export const config: TablesConfig = {
         tableHeaderItemClass: 'p-2 text-center',
         tableRowDataClass: 'p-2 text-center',
 
-        tableContainerClass: 'has-font-6',
+        tableContainerClass: 'has-font-6 margin-auto',
         tableHeadContainerClass: 'p-2',
         tableHeaderTextClass: 'text-center',
         tableRowCheckboxClass: 'button',

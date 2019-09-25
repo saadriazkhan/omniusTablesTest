@@ -1,6 +1,6 @@
 export const locale = {
     EN: {
-        "OMNI Tables Project": "OMNI Tables Project",
+        "Omni Tables Project": "Omni Tables Project",
         "Hidden Columns": "Hidden Columns",
         "Pages": "Pages",
         "Search": {
@@ -18,7 +18,7 @@ export const locale = {
         "Edit Mode Off": "Edit Mode Off"
     },
     FR: {
-        "OMNI Tables Project": "Projet de tables OMNI",
+        "Omni Tables Project": "Projet de tables Omni",
         "Hidden Columns": "colonnes cachées",
         "Pages": "Des pages",
         "Search": {

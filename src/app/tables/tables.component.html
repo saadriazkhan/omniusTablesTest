@@ -1,24 +1,35 @@
 <div class="loading" *ngIf="loading">
 </div>
-<div class="px-10">
-        
-    <h2 class="mb-10">
-        {{languageConfig["OMNI Tables Project"]}}
-    </h2>
-
-    <div>
-        <app-table 
-            [tableDataSubject]="tableDataSubject" 
-            [tablesConfig]="config"
-            (sortEventEmitter)="sortEvent($event)"
-            (searchEventEmitter)="searchEvent($event)"
-            (filterEventEmitter)="filterEvent($event)"
-            (pageChangeEventEmitter)="pageChangeEvent($event)"
-            (pageSizeChangeEventEmitter)="pageSizeChangeEvent($event)"
-            (onDataLoadStartedEmitter)="onDataLoadStarted($event)"
-            (onDataLoadSucceededEmitter)="onDataLoadSucceeded($event)"
-            (onDataLoadFailedEmitter)="onDataLoadFailed($event)"
-            (saveTableEmitter)="saveTableData($event)">
-        </app-table>
+<div class="columns">
+    <div class="column text-center">
+        <h2 class="mb-10">
+            {{languageConfig["Omni Tables Project"]}}
+        </h2>
+    </div>
+</div>
+<div class="columns">
+    <div class="column text-center">
+        <div>
+            <app-table 
+                [tableDataSubject]="tableDataSubject" 
+                [tablesConfig]="config"
+                (sortEventEmitter)="sortEvent($event)"
+                (searchEventEmitter)="searchEvent($event)"
+                (filterEventEmitter)="filterEvent($event)"
+                (pageChangeEventEmitter)="pageChangeEvent($event)"
+                (pageSizeChangeEventEmitter)="pageSizeChangeEvent($event)"
+                (onDataLoadStartedEmitter)="onDataLoadStarted($event)"
+                (onDataLoadSucceededEmitter)="onDataLoadSucceeded($event)"
+                (onDataLoadFailedEmitter)="onDataLoadFailed($event)"
+                (saveTableEmitter)="saveTableData($event)">
+            </app-table>
+        </div>
+    
+        <div>
+            <h3>Injected Table will come here.</h3>
+            <button (click)="injectRunTimeComponent()">Inject</button>
+            <button class="mx-4" (click)="deleteRunTimeComponent()">delete</button>
+            <ng-template #newTable></ng-template>
+        </div>
     </div>
 </div>

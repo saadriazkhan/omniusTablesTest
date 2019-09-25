@@ -1,24 +1,26 @@
-<div class="columns p-5 mt-5">
-    <div *ngIf="config.pageSizesEnabled">
-        <select 
-            [ngClass]="config.pageSizeClass ? config.pageSizeClass : 'primary-button mr-5'"
-            [(ngModel)]="selectedPageSize" 
-            (ngModelChange)="changePageSize()">
-            <option *ngFor="let pageSize of pageSizes">
-                {{pageSize}}
-            </option>
-        </select>
-    </div>
-    <div class="columns" *ngIf="config.paginationEnabled">
-        <div [ngClass]="config.pagesText ? config.pagesText : 'has-font-6 px-3 mt-2'">
-            {{languageConfig["Pages"]}}:
+<div class="p-5 mt-5">
+    <div class="is-inline-flex">
+        <div *ngIf="config.pageSizesEnabled">
+            <select 
+                [ngClass]="config.pageSizeClass ? config.pageSizeClass : 'primary-button mr-5'"
+                [(ngModel)]="selectedPageSize" 
+                (ngModelChange)="changePageSize()">
+                <option *ngFor="let pageSize of pageSizes">
+                    {{pageSize}}
+                </option>
+            </select>
         </div>
-        <div *ngFor="let page of givePagesArray(pages); let i = index">
-            <button 
-                [ngClass]="[config.buttonClass ? config.buttonClass : 'primary-button p-2',pageSelected-1 == i ? 'selected' : '']"
-                (click)="changePage(i+1)">
-                {{i+1}}
-            </button>
+        <div class="columns" *ngIf="config.paginationEnabled">
+            <div [ngClass]="config.pagesText ? config.pagesText : 'has-font-6 px-3 mt-2'">
+                {{languageConfig["Pages"]}}:
+            </div>
+            <div *ngFor="let page of givePagesArray(pages); let i = index">
+                <button 
+                    [ngClass]="[config.buttonClass ? config.buttonClass : 'primary-button p-2',pageSelected-1 == i ? 'selected' : '']"
+                    (click)="changePage(i+1)">
+                    {{i+1}}
+                </button>
+            </div>
         </div>
     </div>
 </div>

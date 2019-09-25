@@ -41,8 +41,11 @@ export class TableService {
 	}
 
 	// assuming that the data would be coming as a JSON response from the API
-	getData(): void {
-		this.fetchData(this.apiUrl).subscribe(data => {
+	getData(queryParamsFormatted?: string): void {
+		const url = (queryParamsFormatted) ? this.apiUrl + "?" + queryParamsFormatted : this.apiUrl;
+		console.log(url);
+		
+		this.fetchData(url).subscribe(data => {
 			console.log(data);
 			this.tableDataSubject.next(data['responseData']);
 		}, error => {
@@ -66,12 +69,22 @@ export class TableService {
 		if (this.queryParams.filter.length == 0) {
 			delete generatedQueryParams.filter;
 		}
-		if (this.queryParams.hasOwnProperty("search") && this.queryParams.search == "") {
+		if (this.queryParams.search == "") {
 			delete generatedQueryParams.search;
 		}
 		this.routeSubject.next(generatedQueryParams);
 
-		this.getData();
+		this.getData(this.paramsMaptoUrlString(generatedQueryParams));
+	}
+
+	paramsMaptoUrlString(queryParams: APIQueryParams): string {
+		let url = "";
+		Object.keys(queryParams).forEach(key => {
+			url = url + key + "&" + JSON.stringify(queryParams[key]) + "&";
+
+		});
+		url = url.replace(/"/g, '');
+		return url.substring(0, url.length - 1);
 	}
 
 	sort(sortField: Sort): void {
@@ -84,17 +97,11 @@ export class TableService {
 	}
 
 	search(searchTerm: string): void {
-		if (searchTerm == "") {
-			delete this.queryParams.search;
-		}
-		else {
-			this.queryParams.search = searchTerm;
-		}
+		this.queryParams.search = searchTerm;
 		this.generateUrl();
 	}
 
 	filter(filterArray: Filter[]): void {
-		console.log(filterArray);
 		let array = [];
 		filterArray.forEach(filter => {
 			array = this.queryParams.filter.filter(value => (value.field != filter.field));
@@ -122,6 +129,8 @@ export class TableService {
 
 	saveTableData(data: DataTableValue[]) {
 		console.log(data);
+		console.log("API to be called from here");
+		
 	}
 
 

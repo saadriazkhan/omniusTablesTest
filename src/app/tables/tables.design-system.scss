@@ -24,7 +24,7 @@
             border-radius: sizeValue($key, $sizeUnit) !important;
         }
         .#{$borderKey}#{$key} {
-            border-radius: sizeValue($key, $sizeUnit) !important;
+            border: sizeValue($key, $sizeUnit) !important;
         }
         .#{$opacityKey}#{$key} {
             opacity: sizeValueOpacity($key) !important;
@@ -226,4 +226,5 @@ input {
 .position-absolute {
     position: absolute;
 }
+
 

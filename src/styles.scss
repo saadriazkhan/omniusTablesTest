@@ -82,12 +82,13 @@ $themeSecondary: (
     "tableRowHoverBackground": $tableRowHoverBackgroundSecondary,
     "borderWidth": $borderWidthSecondary,
     "borderColor": $borderColorSecondary,
-    "collapseBorder": separate
+    "collapseBorder": collapse
 );
 
 body {
     background: $bodyBackground;
     font-family: $fontFamilyPrimary;
+    margin: 0px;
 }
 .primary {
     @include tables($themePrimary);
@@ -150,4 +151,12 @@ button {
     background-repeat: no-repeat;
     background-position: center;
     transform: scale(5.5);
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.is-inline-flex {
+    display: inline-flex;
 }

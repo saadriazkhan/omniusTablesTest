@@ -42,6 +42,7 @@ const routes: Routes = [
 	exports: [RouterModule],
 	providers: [
 		TableService
-	]
+	],
+	entryComponents: [TableComponent]
 })
 export class TablesModule { }
