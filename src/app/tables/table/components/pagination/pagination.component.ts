@@ -10,6 +10,7 @@ export class PaginationComponent implements OnInit {
 
 	@Input() pages: number = 1; // default
 	@Input() pageSizes: number[] = [25, 50, 75, 100];
+	@Input() defaultPageSize: number = 25;
 
 	@Input() config = { // default
 		pageSizesEnabled: true,
@@ -23,7 +24,7 @@ export class PaginationComponent implements OnInit {
 	@Output() pageSizeChangeEmiiter = new EventEmitter<number>();
 
 	pageSelected: number = 1;
-	selectedPageSize: number = this.pageSizes[0]; // default
+	selectedPageSize: any = this.pageSizes[0]; // default
 
 	languageConfig: any = {};
 	constructor(private languageService: I18nService) {
@@ -35,7 +36,8 @@ export class PaginationComponent implements OnInit {
 	}
 
 	changePageSize(): void {
-		this.pageSizeChangeEmiiter.emit(this.selectedPageSize);
+		this.pageSelected = 1; // default
+		this.pageSizeChangeEmiiter.emit(parseInt(this.selectedPageSize));
 	}
 
 	changePage(page: number): void {

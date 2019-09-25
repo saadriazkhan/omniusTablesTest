@@ -1,6 +1,7 @@
 interface TableConfig {
     theme?: string
-    pageSizes: number[]
+    pageSizes: number[],
+    defaultPageSize: number,
     editTableButtonClass?: string
     editTableButtonContainerClass?: string
     hideColumnButtonClass?: string
@@ -31,7 +32,7 @@ interface FilterConfig {
     filterButtonClass?: string,
     dropdownContainerClass?: string
     formContainerClass?: string
-    formFilterClass?: string
+    formFilterKeyClass?: string
     formFilterButton?: string
     formClearButton?: string
     formInputClass?: string

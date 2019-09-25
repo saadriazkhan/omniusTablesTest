@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { I18nService } from '../../i18n/i18n.service';
 import { ConfigurationService } from 'src/app/configuration/configuration.service';
+import { DataTableValue } from './components/models/dataTableValue';
+
 
 @Component({
 	selector: 'app-table',
@@ -16,6 +18,7 @@ export class TableComponent implements Tables {
 	config = { // default
 		theme: 'primary',
 		pageSizes: [5, 10, 15, 20],
+		defaultPageSize: 5,
 		editTableButtonClass: 'px-2',
 		editTableButtonContainerClass: '',
 		hideColumnButtonClass: 'px-1 py-1 has-font-4',
@@ -49,7 +52,7 @@ export class TableComponent implements Tables {
 	@Output() searchEventEmitter = new EventEmitter();
 	@Output() filterEventEmitter = new EventEmitter();
 	@Output() pageChangeEventEmitter = new EventEmitter();
-	@Output() pageSizeChageEventEmitter = new EventEmitter();
+	@Output() pageSizeChangeEventEmitter = new EventEmitter();
 	@Output() saveTableEmitter = new EventEmitter();
 	@Output() onDataLoadStartedEmitter = new EventEmitter();
 	@Output() onDataLoadSucceededEmitter = new EventEmitter();
@@ -61,16 +64,24 @@ export class TableComponent implements Tables {
 
 	objectKeys = [];
 
+	saveTableDataArray: DataTableValue[] = [];
+
 	ngOnInit() {
 		this.config = this.tablesConfig['TableConfig']; // over writes the default
 		this.pageSizes = this.config['pageSizes'];
-
-		this.saveTableSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe(data => {
-			console.log(data);
-			this.saveTableEmitter.emit(data);
-		}, error => {
-			console.log(error);
-		});
+		this.pageSizeChange
+		// -------------------------------
+		this.saveTableSubject
+			.pipe(debounceTime(400), distinctUntilChanged())
+			.subscribe(
+				(data: DataTableValue) => {
+					console.log(data);
+					this.saveTableDataArray = this.addUniquely(data, this.saveTableDataArray);
+				},
+				error => {
+					console.log(error);
+				});
+		// -------------------------------
 
 		this.tableDataSubject.subscribe((data) => {
 			this.objectKeys = ((data as Object[]).length > 0) ? Object.keys(data[0]) : [];
@@ -81,39 +92,52 @@ export class TableComponent implements Tables {
 			this.onDataLoadFailedEmitter.emit("Data loading failed.");
 		});
 
+		this.loadData();
+	}
 
+	loadData() {
 		this.onDataLoadStartedEmitter.emit("Loading data..");
+	}
+
+	addUniquely(dataObject: DataTableValue, array: DataTableValue[]): DataTableValue[] {
+		const filteredArray = array.filter(value => ((dataObject.column == value.column) && dataObject.row == value.row));
+		filteredArray.push(dataObject);
+		return filteredArray;
 	}
 
 	// emitters ------------------------
 	filterData(filter: Filter[]): void {
+		this.loadData();
 		this.filterEventEmitter.emit(filter);
 	}
 
-	resetFilterData(filter: Filter):void {
+	resetFilterData(filter: Filter): void {
+		this.loadData();
 		this.filterEventEmitter.emit([filter]);
 	}
 
 	pageChange(pageNumber: number): void {
-		console.log("pageChange", pageNumber);
+		this.loadData();
 		this.pageChangeEventEmitter.emit(pageNumber);
 	}
 
 	pageSizeChange(pageSize: number): void {
-		console.log("pageSizeChange", pageSize);
-		this.pageSizeChageEventEmitter.emit(pageSize);
+		this.loadData();
+		this.pageSizeChangeEventEmitter.emit(pageSize);
 	}
 
 	searchData(searchTerm: string): void {
-		console.log(searchTerm);
+		this.loadData();
 		this.searchEventEmitter.emit(searchTerm);
 	}
 
 	resetSearch(): void {
+		this.loadData();
 		this.searchEventEmitter.emit("");
 	}
 
 	sortData(sort: Sort): void {
+		this.loadData();
 		this.sortEventEmitter.emit(sort);
 	}
 
@@ -121,13 +145,22 @@ export class TableComponent implements Tables {
 	saveTableData($event: any, rowIndex: number, columnIndex: number): void {
 		const previousValue = this.tableData[rowIndex][this.objectKeys[columnIndex]];
 		this.saveTableSubject.next({
-			value: (!this.utility.isBoolean(previousValue)) ? $event['target']['textContent'] : $event['target']['checked'],
+			value: (!this.utility.isBoolean(previousValue)) ? $event['target']['textContent'].toString().trim() : $event['target']['checked'].toString().trim(),
 			rowIndex,
 			columnIndex
 		});
 	}
 
 	// emitters ------------------------
+
+	toggleEditMode() {
+		this.editEnabled = !this.editEnabled;
+		if (this.editEnabled == false) {
+			this.loadData();
+			this.saveTableEmitter.emit(this.saveTableDataArray);
+			this.saveTableDataArray = [];
+		}
+	}
 
 	hideColumn(column: string): void {
 		this.hiddenColumnsArray.push(column);

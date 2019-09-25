@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { config } from './configuration.config';
-import { dataColumnsTypes, formattingMap } from './configuration-table.config';
+import { dataColumnsTypes, formattingMap, primaryKey } from './configuration-table.config';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,4 +21,7 @@ export class ConfigurationService {
 		return formattingMap;
 	}
 
+	getPrimaryKey() {
+		return primaryKey;
+	}
 }

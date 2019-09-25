@@ -25,7 +25,7 @@ export abstract class Tables {
     abstract searchEventEmitter = new EventEmitter();
     abstract filterEventEmitter = new EventEmitter();
     abstract pageChangeEventEmitter = new EventEmitter();
-    abstract pageSizeChageEventEmitter = new EventEmitter();
+    abstract pageSizeChangeEventEmitter = new EventEmitter();
 
     abstract saveTableEmitter = new EventEmitter();
     abstract onDataLoadStartedEmitter = new EventEmitter();

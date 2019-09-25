@@ -19,7 +19,7 @@
         <div class="column">
             <div [ngClass]="config.editTableButtonContainerClass ? config.editTableButtonContainerClass:''">
             
-                <button (click)="editEnabled = !editEnabled;" 
+                <button (click)="toggleEditMode()" 
                     [ngClass]="config.editTableButtonClass ? (editEnabled) ? config.editTableButtonClass + ' selected': config.editTableButtonClass :'px-2 my-4'">
                     <span *ngIf="editEnabled">
                         {{languageConfig["Edit Mode On"]}}
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="column">
-            <div class="pulled-right">
+            <div class="pulled-left">
                 <ng-container>
                     <app-search 
                         [config]="tablesConfig['SearchConfig']"
@@ -75,7 +75,7 @@
                                     <div class="column">
                                         <app-sorting
                                             [config]="tablesConfig['SortingConfig']" 
-                                            [fieldName]="head"
+                                            [field]="head"
                                             (sortingEmitter)="sortData($event)">
                                         </app-sorting>
                                     </div>
@@ -89,9 +89,9 @@
                                     <div class="column">
                                         <app-filter
                                             [config]="tablesConfig['FilterConfig']" 
-                                            [fieldName]="head" 
-                                            (resetFilterEmitter)="filterData($event)" 
-                                            (filterSelectedEmitter)="resetFilterData($event)">
+                                            [field]="head" 
+                                            (resetFilterEmitter)="resetFilterData($event)" 
+                                            (filterSelectedEmitter)="filterData($event)">
                                         </app-filter>
                                     </div>
                                 </div>                
@@ -155,6 +155,7 @@
         [config]="tablesConfig['PaginationConfig']"
         [pages]="5"
         [pageSizes]="pageSizes"
+        [defaultPageSize]="tablesConfig['defaultPageSize']"
         (pageChangeEmitter)="pageChange($event)"
         (pageSizeChangeEmiiter)="pageSizeChange($event)">
         <!-- config -->

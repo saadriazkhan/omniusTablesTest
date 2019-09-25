@@ -46,11 +46,19 @@ $buttonSecondaryBackgroundFocus: #092570;
 // @include designBasics($designForRem);
 
 .primary-dropdown {
-    @include dropdown($backgroundPrimary, $borderColorPrimary, $borderWidthPrimary);
+    @include dropdown(
+        $backgroundPrimary,
+        $borderColorPrimary,
+        $borderWidthPrimary
+    );
 }
 
 .secondary-dropdown {
-    @include dropdown($backgroundSecondary, $borderColorSecondary, $borderWidthSecondary);
+    @include dropdown(
+        $backgroundSecondary,
+        $borderColorSecondary,
+        $borderWidthSecondary
+    );
 }
 
 $themePrimary: (
@@ -107,19 +115,12 @@ body {
     );
 }
 .transparent-button {
-    @include button(
-        transparent,
-        black,
-        transparent
-    );
+    @include button(transparent, black, transparent);
 }
 
 .white-button {
-    @include button(
-        white,
-    );
+    @include button(white);
 }
-
 
 .columns {
     display: flex;
@@ -134,11 +135,19 @@ body {
 
 @include column-widths();
 
-
 button {
     @include button();
 }
 
-
-
 @include fontAndBorderSizes($designForPixel);
+
+.loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #caa3a361;
+    background-image: url(/assets/loader.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: scale(5.5);
+}

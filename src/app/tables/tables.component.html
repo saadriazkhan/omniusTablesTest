@@ -1,4 +1,7 @@
+<div class="loading" *ngIf="loading">
+</div>
 <div class="px-10">
+        
     <h2 class="mb-10">
         {{languageConfig["OMNI Tables Project"]}}
     </h2>
@@ -11,10 +14,11 @@
             (searchEventEmitter)="searchEvent($event)"
             (filterEventEmitter)="filterEvent($event)"
             (pageChangeEventEmitter)="pageChangeEvent($event)"
-            (pageSizeChageEventEmitter)="pageSizeChageEvent($event)"
+            (pageSizeChangeEventEmitter)="pageSizeChangeEvent($event)"
             (onDataLoadStartedEmitter)="onDataLoadStarted($event)"
             (onDataLoadSucceededEmitter)="onDataLoadSucceeded($event)"
-            (onDataLoadFailedEmitter)="onDataLoadFailed($event)">
+            (onDataLoadFailedEmitter)="onDataLoadFailed($event)"
+            (saveTableEmitter)="saveTableData($event)">
         </app-table>
     </div>
 </div>

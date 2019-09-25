@@ -8,7 +8,7 @@ import { Sort, SortOrder } from '../models/sort';
 })
 export class SortingComponent {
 
-	@Input() fieldName: string = "";
+	@Input() field: string = "";
 	@Input() config = { // default
 		enabled: true,
 		sortingContainerClass:'',
@@ -28,8 +28,8 @@ export class SortingComponent {
 		this.selectedSortOrder = (this.selectedSortOrder > 3) ? 1 : this.selectedSortOrder;
 
 		this.sortingEmitter.emit({
-			fieldName: this.fieldName,
-			sortOrder: SortOrder[this.selectedSortOrder - 1]
+			field: this.field,
+			method: SortOrder[this.selectedSortOrder - 1]
 		});
 	}
 

@@ -19,7 +19,7 @@
             
             <div class="columns" *ngIf="config.equalsEnabled">
                 <div class="column" 
-                    [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                    [ngClass]="config.formFilterKeyClass ? config.formFilterKeyClass :''">
                     {{languageConfig.Filter["Equals"]}}:
                 </div>
                 <div class="column"
@@ -32,7 +32,7 @@
             <div *ngIf="config.rangeEnabled">
                 <div class="columns mt-2"> 
                     <div class="column"
-                        [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                        [ngClass]="config.formFilterKeyClass ? config.formFilterKeyClass :''">
                         {{languageConfig.Filter["From"]}}:
                     </div>
                     <div class="column"
@@ -42,7 +42,7 @@
                 </div>
                 <div class="columns mt-2"> 
                     <div class="column"
-                        [ngClass]="config.formFilterClass ? config.formFilterClass :''">
+                        [ngClass]="config.formFilterKeyClass ? config.formFilterKeyClass :''">
                         {{languageConfig.Filter["To"]}}:
                     </div>
                     <div class="column"
@@ -59,6 +59,7 @@
             </button>
         </form>
         <button (click)="clearFilter()"
+            [disabled]="clearFilterButtonDisabled"
             [ngClass]="config.formClearButton ? config.formClearButton :''">
             {{languageConfig.Filter["Clear Filter"]}}
         </button>

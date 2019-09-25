@@ -10,7 +10,7 @@ import { I18nService } from '../../../../i18n/i18n.service';
 })
 export class FilterComponent {
 
-	@Input() fieldName: string = "";
+	@Input() field: string = "";
 	@Input() config = { // default
 		enabled: true,
 		rangeEnabled: true,
@@ -18,7 +18,7 @@ export class FilterComponent {
 		filterButtonClass: 'ml-2 px-2 py-1 white-button',
 		dropdownContainerClass: 'p-4 has-border-radius-2',
 		formContainerClass: 'p-2',
-		formFilterClass: 'is-4',
+		formFilterKeyClass: 'is-4',
 		formFilterButton: 'mt-4',
 		formClearButton: '',
 		formInputClass: ''
@@ -31,6 +31,7 @@ export class FilterComponent {
 
 	form;
 	filterButtonDisabled: boolean = true;
+	clearFilterButtonDisabled: boolean = true;
 
 	languageConfig: any = {};
 	constructor(private languageService: I18nService, private formBuilder: FormBuilder) {
@@ -48,23 +49,26 @@ export class FilterComponent {
 
 	onSubmit() {
 		this.showDropdown = false;
-		const filterArray: { fieldName: string, method: string, parameters: string | number[] }[] = [];
+		const filterArray: { field: string, method: string, parameters: string | number[] }[] = [];
 
 		if (this.form.get('equalValue').value.length > 0) {
 			filterArray.push({
-				fieldName: this.fieldName,
+				field: this.field,
 				method: "EQUALS",
 				parameters: this.form.get('equalValue').value
 			});
 		}
 
 		if (this.form.get('fromValue').value != "" && this.form.get('toValue').value != "") {
-			filterArray.push({
-				fieldName: this.fieldName,
-				method: "RANGE",
-				parameters: [this.form.get('fromValue').value, this.form.get('toValue').value]
-			});
+			if (this.form.get('fromValue').value != null && this.form.get('toValue').value != null) {
+				filterArray.push({
+					field: this.field,
+					method: "RANGE",
+					parameters: [this.form.get('fromValue').value, this.form.get('toValue').value]
+				});
+			}
 		}
+		this.clearFilterButtonDisabled = false;
 		this.filterSelectedEmitter.emit(filterArray);
 	}
 
@@ -72,6 +76,7 @@ export class FilterComponent {
 		this.form.get('equalValue').setValue('');
 		this.form.get('toValue').setValue('');
 		this.form.get('fromValue').setValue('');
-		this.resetFilterEmitter.emit({ fieldName: this.fieldName });
+		this.resetFilterEmitter.emit({ field: this.field });
+		this.clearFilterButtonDisabled = true;
 	}
 }

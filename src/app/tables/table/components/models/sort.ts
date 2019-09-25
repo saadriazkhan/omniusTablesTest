@@ -1,6 +1,6 @@
 export interface Sort {
-    fieldName: string, 
-    sortOrder: string
+    field: string, 
+    method: string
 }
 
 export enum SortOrder {

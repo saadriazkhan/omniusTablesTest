@@ -1,22 +1,48 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Sort } from '../table/components/models/sort';
+import { Filter } from '../table/components/models/filter';
+import { DataTableValue } from '../table/components/models/dataTableValue';
+import { ConfigurationService } from 'src/app/configuration/configuration.service';
+
+interface APIQueryParams {
+	pageSize?: number
+	cursor?: string
+	search?: string
+	sort?: Sort[],
+	filter?: Filter[]
+}
 
 @Injectable()
 export class TableService {
 
-	constructor(private http: HttpClient) { }
+	queryParams: APIQueryParams = {
+		pageSize: 1,
+		cursor: "",
+		search: "",
+		sort: [],
+		filter: [],
+	};
 
-	private fetchData(apiUrl: string) {
+	tableDataSubject = new Subject();
+	routeSubject = new Subject();
+
+	apiUrl = "";
+	constructor(private http: HttpClient, private configrationService: ConfigurationService) {
+		this.apiUrl = environment.apiUrl;
+		this.queryParams.cursor = this.configrationService.getPrimaryKey();
+	}
+
+
+	private fetchData(apiUrl: string): Observable<any> {
 		return this.http.get(apiUrl);
 	}
 
-	tableDataSubject = new Subject();
-
 	// assuming that the data would be coming as a JSON response from the API
-	getData() {
-		this.fetchData(environment.apiUrl).subscribe(data => {
+	getData(): void {
+		this.fetchData(this.apiUrl).subscribe(data => {
 			console.log(data);
 			this.tableDataSubject.next(data['responseData']);
 		}, error => {
@@ -25,24 +51,78 @@ export class TableService {
 		});
 	}
 
-	sortEvent($event) {
-		console.log($event);
+	generateUrl() {
+		console.log(this.queryParams);
+		const generatedQueryParams: APIQueryParams = { // copying by value
+			pageSize: this.queryParams.pageSize,
+			cursor: this.queryParams.cursor,
+			search: this.queryParams.search,
+			sort: this.queryParams.sort,
+			filter: this.queryParams.filter
+		};
+		if (this.queryParams.sort.length == 0) {
+			delete generatedQueryParams.sort;
+		}
+		if (this.queryParams.filter.length == 0) {
+			delete generatedQueryParams.filter;
+		}
+		if (this.queryParams.hasOwnProperty("search") && this.queryParams.search == "") {
+			delete generatedQueryParams.search;
+		}
+		this.routeSubject.next(generatedQueryParams);
+
+		this.getData();
 	}
 
-	searchEvent($event) {
-		console.log($event);
+	sort(sortField: Sort): void {
+		const array = this.queryParams.sort.filter(value => (value.field != sortField.field));
+		if (sortField.method != "NONE") {
+			array.push(sortField);
+		}
+		this.queryParams.sort = array;
+		this.generateUrl();
 	}
 
-	filterEvent($event) {
-		console.log($event);
+	search(searchTerm: string): void {
+		if (searchTerm == "") {
+			delete this.queryParams.search;
+		}
+		else {
+			this.queryParams.search = searchTerm;
+		}
+		this.generateUrl();
 	}
 
-	pageChangeEvent($event) {
-		console.log($event);
+	filter(filterArray: Filter[]): void {
+		console.log(filterArray);
+		let array = [];
+		filterArray.forEach(filter => {
+			array = this.queryParams.filter.filter(value => (value.field != filter.field));
+		});
+
+		filterArray.forEach(element => {
+			if (element.hasOwnProperty("method")) {
+				array.push(element);
+			}
+		});
+		this.queryParams.sort = array;
+		this.generateUrl();
 	}
 
-	pageSizeChageEvent($event) {
+	pageChange($event: number): void {
 		console.log($event);
+		this.generateUrl();
 	}
+
+	pageSizeChange(pageSize: number): void {
+		console.log(pageSize);
+		this.queryParams.pageSize = pageSize;
+		this.generateUrl();
+	}
+
+	saveTableData(data: DataTableValue[]) {
+		console.log(data);
+	}
+
 
 }

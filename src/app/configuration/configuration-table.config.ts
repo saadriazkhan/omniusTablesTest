@@ -52,3 +52,5 @@ export const dataColumnsTypes = {
     "dateTime": "datetime",
     "carName": "string"
 }
+
+export const primaryKey = "id";

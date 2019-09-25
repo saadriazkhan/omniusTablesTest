@@ -1,5 +1,5 @@
 export interface Filter {
-    fieldName: string, 
+    field: string, 
     method?: string, 
     parameters?: string | number[]
 }
