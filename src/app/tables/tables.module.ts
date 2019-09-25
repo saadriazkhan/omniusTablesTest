@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TablesComponent } from './tables.component';
 import { Routes, RouterModule } from '@angular/router';
 import { TableService } from './service/table.service';
-import { tableHeaderItemPipe, tableValueItemPipe } from './table-pipes/table-helper-pipes.pipe';
+import { tableValueItemPipe } from './table-pipes/table-helper-pipes.pipe';
 import { FilterComponent } from './table/components/filter/filter.component';
 import { SearchComponent } from './table/components/search/search.component';
 import { SortingComponent } from './table/components/sorting/sorting.component';
@@ -24,7 +24,6 @@ const routes: Routes = [
 @NgModule({
 	declarations: [
 		TablesComponent,
-		tableHeaderItemPipe,
 		tableValueItemPipe,
 		FilterComponent,
 		SearchComponent,

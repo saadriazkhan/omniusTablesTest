@@ -2,11 +2,19 @@
     <h2 class="mb-10">
         {{languageConfig["OMNI Tables Project"]}}
     </h2>
-    
+
     <div>
         <app-table 
+            [tableDataSubject]="tableDataSubject" 
             [tablesConfig]="config"
-            [tableData]="tableData">
+            (sortEventEmitter)="sortEvent($event)"
+            (searchEventEmitter)="searchEvent($event)"
+            (filterEventEmitter)="filterEvent($event)"
+            (pageChangeEventEmitter)="pageChangeEvent($event)"
+            (pageSizeChageEventEmitter)="pageSizeChageEvent($event)"
+            (onDataLoadStartedEmitter)="onDataLoadStarted($event)"
+            (onDataLoadSucceededEmitter)="onDataLoadSucceeded($event)"
+            (onDataLoadFailedEmitter)="onDataLoadFailed($event)">
         </app-table>
     </div>
 </div>

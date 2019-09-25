@@ -26,7 +26,7 @@ export const config: TablesConfig = {
     SortingConfig: {
         enabled: true,
         sortingContainerClass: '',
-        sortingButtonClass: 'px-0 transparent-button py-0 pulled-left',
+        sortingButtonClass: 'px-0 transparent-button py-0 pulled-left has-width-2',
         sortingUpClass: 'fa fa-caret-up',
         sortingDownClass: 'fa fa-caret-down',
     },

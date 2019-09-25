@@ -19,7 +19,7 @@
         <div class="column">
             <div [ngClass]="config.editTableButtonContainerClass ? config.editTableButtonContainerClass:''">
             
-                <button (click)="editTable()" 
+                <button (click)="editEnabled = !editEnabled;" 
                     [ngClass]="config.editTableButtonClass ? (editEnabled) ? config.editTableButtonClass + ' selected': config.editTableButtonClass :'px-2 my-4'">
                     <span *ngIf="editEnabled">
                         {{languageConfig["Edit Mode On"]}}
@@ -36,8 +36,8 @@
                     <app-search 
                         [config]="tablesConfig['SearchConfig']"
                         [placeholder]="'Search anything here'"
-                        (searchValueEmitter)="searchInData($event)"
-                        (resetSearchEmitter)="resetSearchForData()">
+                        (searchValueEmitter)="searchData($event)"
+                        (resetSearchEmitter)="resetSearch()">
                     </app-search>
                 </ng-container>
             </div>
@@ -51,8 +51,7 @@
             <table  [ngClass]="config.tableContainerClass ?config.tableContainerClass : ''">
     
                 <thead [ngClass]="config.tableHeadContainerClass ?config.tableHeadContainerClass : ''">
-    
-                    <th *ngFor="let head of tableData[0] | tableHeaderItem; let i = index">
+                    <th *ngFor="let head of objectKeys; let i = index">
                         
                         <div [ngClass]="config.tableHeaderItemClass ?config.tableHeaderItemClass : ''" >
                             <div *ngIf="!hiddenColumnsArray.includes(head);
@@ -92,7 +91,7 @@
                                             [config]="tablesConfig['FilterConfig']" 
                                             [fieldName]="head" 
                                             (resetFilterEmitter)="filterData($event)" 
-                                            filterSelectedEmitter="resetFilterData($event)">
+                                            (filterSelectedEmitter)="resetFilterData($event)">
                                         </app-filter>
                                     </div>
                                 </div>                

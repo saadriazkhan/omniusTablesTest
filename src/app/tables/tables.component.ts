@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableService } from './service/table.service';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { I18nService } from '../i18n/i18n.service';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-tables',
@@ -11,20 +12,55 @@ import { I18nService } from '../i18n/i18n.service';
 export class TablesComponent implements OnInit {
 
     languageConfig: any = {};
-    constructor(private tableService: TableService, private configurationService: ConfigurationService, private languageService: I18nService) {
-        this.languageConfig = this.languageService.getLocaleConfig();
-    }
 
-    tableData: {}[] = [];
+    tableData: Object[] = [];
     config: {} = {};
 
-    ngOnInit() {
+    tableDataSubject = new Subject();
 
-        this.config = this.configurationService.getTableConfig();
-
-        //implement subject here
-        this.tableData = this.tableService.getData();
-        console.log(this.tableData);
+    constructor(private tableService: TableService, private configurationService: ConfigurationService, private languageService: I18nService) {
+        this.languageConfig = this.languageService.getLocaleConfig();
+        this.tableDataSubject = this.tableService.tableDataSubject;
     }
 
+    ngOnInit() {
+        this.config = this.configurationService.getTableConfig();
+    }
+
+    sortEvent($event): void {
+        console.log($event);
+    }
+
+    searchEvent($event): void {
+        console.log($event);
+    }
+
+    filterEvent($event): void {
+        console.log($event);
+    }
+
+    pageChangeEvent($event): void {
+        console.log($event);
+    }
+
+    pageSizeChageEvent($event): void {
+        console.log($event);
+    }
+
+    onDataLoadStarted($event): void {
+        console.log($event);
+        this.tableService.getData();
+    }
+
+    onDataLoadSucceeded($event): void {
+        console.log($event);
+    }
+
+    onDataLoadFailed($event): void {
+        console.log($event);
+    }
+
+    ngOnDestroy() {
+        this.tableService.tableDataSubject.unsubscribe();
+    }
 }

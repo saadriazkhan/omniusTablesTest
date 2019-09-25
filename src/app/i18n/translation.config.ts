@@ -38,3 +38,8 @@ export const locale = {
 };
 
 export const availableLanguages = ["EN", "FR"];
+
+export const availableCurrencies = {
+    "EN": "$",
+    "FR": "‎€"
+};

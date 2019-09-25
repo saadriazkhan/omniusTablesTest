@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { locale, availableLanguages } from './translation.config';
+import { locale, availableLanguages, availableCurrencies } from './translation.config';
 
 @Injectable({
 	providedIn: 'root'
@@ -7,11 +7,21 @@ import { locale, availableLanguages } from './translation.config';
 export class I18nService {
 	constructor() { }
 
+	private currentLanguage = "EN";
+
+	setCurrentLanguage(langauge: string): void {
+		this.currentLanguage = langauge;
+	}
+
 	getavailableLanguages(): string[] {
 		return availableLanguages;
 	}
 
 	getLocaleConfig() {
-		return locale["EN"];
+		return locale[this.currentLanguage];
+	}
+
+	getLocaleCurrency(): string {
+		return availableCurrencies[this.currentLanguage];
 	}
 }

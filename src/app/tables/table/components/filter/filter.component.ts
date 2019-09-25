@@ -65,14 +65,13 @@ export class FilterComponent {
 				parameters: [this.form.get('fromValue').value, this.form.get('toValue').value]
 			});
 		}
-		console.log(filterArray);
 		this.filterSelectedEmitter.emit(filterArray);
 	}
 
 	clearFilter() {
-		this.form.equalValue.setValue('');
-		this.form.toValue.setValue('');
-		this.form.fromValue.setValue('');
+		this.form.get('equalValue').setValue('');
+		this.form.get('toValue').setValue('');
+		this.form.get('fromValue').setValue('');
 		this.resetFilterEmitter.emit({ fieldName: this.fieldName });
 	}
 }

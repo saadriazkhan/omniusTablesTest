@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-function ExtractKeys(value: string[]): any[] {
+function ExtractKeys(value: Object): any[] {
 	let keys = [];
+
 	for (let key in value) {
 		keys.push(key);
 	}
@@ -9,20 +10,11 @@ function ExtractKeys(value: string[]): any[] {
 }
 
 @Pipe({
-	name: 'tableHeaderItem'
-})
-export class tableHeaderItemPipe implements PipeTransform {
-	transform(value: string[]): any[] {
-		return ExtractKeys(value);
-	}
-}
-
-@Pipe({
 	name: 'tableValueItem'
 })
 export class tableValueItemPipe implements PipeTransform {
-	
-	transform(value: string[]): any[] {
+
+	transform(value: Object): any[] {
 		return ExtractKeys(value);
 	}
 }

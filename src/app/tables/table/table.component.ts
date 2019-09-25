@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Filter } from './components/models/filter';
 import { Sort } from './components/models/sort';
-import { Tables, Utility } from './components/models/table.class';
+import { Tables, Utility } from './components/models/utility.class';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { I18nService } from '../../i18n/i18n.service';
+import { ConfigurationService } from 'src/app/configuration/configuration.service';
 
 @Component({
 	selector: 'app-table',
@@ -12,10 +13,6 @@ import { I18nService } from '../../i18n/i18n.service';
 	styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements Tables {
-
-	@Input() tableData = [];
-	@Input() tablesConfig = {};
-
 	config = { // default
 		theme: 'primary',
 		pageSizes: [5, 10, 15, 20],
@@ -42,9 +39,23 @@ export class TableComponent implements Tables {
 
 	utility = new Utility();
 	saveTableSubject = new Subject();
-
 	languageConfig: any = {};
-	constructor(private languageService: I18nService) {
+	tableData = [];
+
+	@Input() tablesConfig = {};
+	@Input() tableDataSubject = new Subject();
+
+	@Output() sortEventEmitter = new EventEmitter();
+	@Output() searchEventEmitter = new EventEmitter();
+	@Output() filterEventEmitter = new EventEmitter();
+	@Output() pageChangeEventEmitter = new EventEmitter();
+	@Output() pageSizeChageEventEmitter = new EventEmitter();
+	@Output() saveTableEmitter = new EventEmitter();
+	@Output() onDataLoadStartedEmitter = new EventEmitter();
+	@Output() onDataLoadSucceededEmitter = new EventEmitter();
+	@Output() onDataLoadFailedEmitter = new EventEmitter();
+
+	constructor(private languageService: I18nService, private configurationService: ConfigurationService) {
 		this.languageConfig = this.languageService.getLocaleConfig();
 	}
 
@@ -53,65 +64,99 @@ export class TableComponent implements Tables {
 	ngOnInit() {
 		this.config = this.tablesConfig['TableConfig']; // over writes the default
 		this.pageSizes = this.config['pageSizes'];
-		this.objectKeys = (this.tableData.length > 0) ? Object.keys(this.tableData[0]) : [];
 
 		this.saveTableSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe(data => {
 			console.log(data);
+			this.saveTableEmitter.emit(data);
 		}, error => {
 			console.log(error);
 		});
+
+		this.tableDataSubject.subscribe((data) => {
+			this.objectKeys = ((data as Object[]).length > 0) ? Object.keys(data[0]) : [];
+			this.tableData = this.transformData(data as Object[]);
+			this.onDataLoadSucceededEmitter.emit("Data loaded.");
+		}, error => {
+			console.log(error);
+			this.onDataLoadFailedEmitter.emit("Data loading failed.");
+		});
+
+
+		this.onDataLoadStartedEmitter.emit("Loading data..");
 	}
 
-	filterData(filter: Filter) {
-		console.log(filter);
+	// emitters ------------------------
+	filterData(filter: Filter[]): void {
+		this.filterEventEmitter.emit(filter);
 	}
 
-	resetFilterData(filter: Filter) {
-		console.log(filter);
+	resetFilterData(filter: Filter):void {
+		this.filterEventEmitter.emit([filter]);
 	}
 
-	pageChange($event: number): void {
-		console.log("pageChange", $event);
+	pageChange(pageNumber: number): void {
+		console.log("pageChange", pageNumber);
+		this.pageChangeEventEmitter.emit(pageNumber);
 	}
 
-	pageSizeChange($event: number): void {
-		console.log("pageSIZEChange", $event);
+	pageSizeChange(pageSize: number): void {
+		console.log("pageSizeChange", pageSize);
+		this.pageSizeChageEventEmitter.emit(pageSize);
 	}
 
-	searchInData(searchTerm: string): void {
+	searchData(searchTerm: string): void {
 		console.log(searchTerm);
+		this.searchEventEmitter.emit(searchTerm);
 	}
 
-	resetSearchForData(): void {
-		console.log("reset search");
+	resetSearch(): void {
+		this.searchEventEmitter.emit("");
 	}
 
 	sortData(sort: Sort): void {
-		console.log(sort);
+		this.sortEventEmitter.emit(sort);
 	}
 
-	editTable(): void {
-		this.editEnabled = !this.editEnabled;
-	}
-
-	saveTableData($event, rowIndex: number, columnIndex: number): void {
+	// this function emits in ngOnInit
+	saveTableData($event: any, rowIndex: number, columnIndex: number): void {
 		const previousValue = this.tableData[rowIndex][this.objectKeys[columnIndex]];
-
 		this.saveTableSubject.next({
-			value: (!this.utility.isBoolean(previousValue)) ? $event.target.textContent : $event.target.checked,
+			value: (!this.utility.isBoolean(previousValue)) ? $event['target']['textContent'] : $event['target']['checked'],
 			rowIndex,
 			columnIndex
 		});
 	}
 
+	// emitters ------------------------
+
 	hideColumn(column: string): void {
-		console.log(column);
 		this.hiddenColumnsArray.push(column);
 	}
 
 	showColumn(column: string): void {
 		this.hiddenColumnsArray = this.hiddenColumnsArray.filter(value => {
-			return value != column
+			return value != column;
 		});
+	}
+
+	transformData(data: Object[]): Object[] {
+		const currency = this.languageService.getLocaleCurrency();
+		const dataColumnsTypes = this.configurationService.getDataColumnsTypes();
+
+		const newData = [];
+		if (data.length > 0) {
+			const keys: string[] = Object.keys(data[0]);
+			const formattingMap = this.configurationService.getFormattingMap();
+
+			data.forEach(row => {
+				let formattedData = {};
+				keys.forEach(key => {
+					// special case
+					formattedData[key] = (dataColumnsTypes[key] == "currency") ? formattingMap[dataColumnsTypes[key]](row[key], currency) : formattingMap[dataColumnsTypes[key]](row[key]);
+				});
+				newData.push(formattedData);
+			});
+		}
+		return newData;
 	}
 }
