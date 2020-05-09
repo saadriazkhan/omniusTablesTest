@@ -1,4 +1,4 @@
-# Omnius Tables Project
+# Omnius Tables Project (Time limit 6 days)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5. No other package has been installed. SCSS was used with Typescript 3.5.3.
 
